@@ -14,7 +14,7 @@ import { MoviesService } from "./movies.service";
 
 @Controller("movies")
 export class MoviesController {
-  constructor(readonly moviesService: MoviesService) {}
+  constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
   getAll() {
@@ -29,11 +29,11 @@ export class MoviesController {
     return this.moviesService.post(movieData);
   }
   @Patch("/:id")
-  patch(@Param("id") movieId: string) {
-    return `This will return one movie with the id: ${movieId}`;
+  patch(@Param("id") movieId: string, @Body() updateData) {
+    return this.moviesService.patch(movieId, updateData);
   }
   @Delete("/:id")
   delete(@Param("id") movieId: string) {
-    return `This will return one movie with the id: ${movieId}`;
+    return this.moviesService.delete(movieId);
   }
 }
