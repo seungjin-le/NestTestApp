@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Movie } from "./entities/Movie.entity";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
+import { ApiResponse } from "@nestjs/swagger";
 
 @Injectable()
 export class MoviesService {
@@ -9,6 +10,18 @@ export class MoviesService {
   getAll(): Movie[] {
     return this.movies;
   }
+
+  @ApiResponse({ type: Movie, isArray: true })
+  @ApiResponse({
+    status: 200,
+    description: "영화를 상세 조회성공",
+    type: Movie,
+  })
+  @ApiResponse({
+    status: 404,
+    description: "영화를 상세 조회실패",
+    type: Movie,
+  })
   getDetail(id: number) {
     const movie = this.movies.find((movie) => movie.id === id);
     if (!movie) {
