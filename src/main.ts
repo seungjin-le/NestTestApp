@@ -22,11 +22,6 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
-/**
- * Swagger 설정 함수
- *
- * @param {INestApplication} app
- */
 function setupSwagger(app) {
   const options = new DocumentBuilder()
     .setTitle("NestJS Study API Docs")

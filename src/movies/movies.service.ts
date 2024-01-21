@@ -11,7 +11,6 @@ export class MoviesService {
     return this.movies;
   }
 
-  @ApiResponse({ type: Movie, isArray: true })
   @ApiResponse({
     status: 200,
     description: "영화를 상세 조회성공",
