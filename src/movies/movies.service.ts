@@ -7,7 +7,8 @@ import { ApiResponse } from "@nestjs/swagger";
 @Injectable()
 export class MoviesService {
   private movies: Movie[] = [];
-  getAll(): Movie[] {
+  getAll({ page, size }): Movie[] {
+    console.log(page, size);
     return this.movies;
   }
 
