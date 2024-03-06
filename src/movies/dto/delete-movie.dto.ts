@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class DeleteMovieDto {
-  @ApiProperty({ description: "The response status" })
+  @ApiProperty({ description: "" })
   status: number;
 
-  @ApiProperty({ description: "The response result" })
+  @ApiProperty({ description: "" })
   res: boolean;
 }
