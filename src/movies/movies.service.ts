@@ -9,24 +9,17 @@ import { Model } from "mongoose";
 
 @Injectable()
 export class MoviesService {
-  // constructor(@InjectModel("Movie") private readonly movieModel: Model<MovieDocument>) {}
+  constructor(@InjectModel(Movie.name) private readonly movieModel: Model<MovieDocument>) {}
   private movies: Movie[] = [];
 
-  getAll({ page, size }): Movie[] {
-    console.log(page, size);
+  async getAll({ page, size }): Promise<Movie[]> {
+    const movies = await this.movieModel.find().exec();
+
+    console.log(movies);
+
     return this.movies;
   }
 
-  @ApiResponse({
-    status: 200,
-    description: "영화를 상세 조회성공",
-    type: Movie,
-  })
-  @ApiResponse({
-    status: 404,
-    description: "영화를 상세 조회실패",
-    type: Movie,
-  })
   getDetail(id: number) {
     const movie = this.movies.find((movie) => movie.id === id);
     if (!movie) {
@@ -39,29 +32,21 @@ export class MoviesService {
     this.movies = this.movies.filter((movie) => movie.id !== +id);
   }
 
-  @ApiResponse({
-    status: 200,
-    description: "영화 저장 성공",
-    type: Movie,
-  })
-  @ApiResponse({
-    status: 404,
-    description: "영화 저장 실패",
-    type: Movie,
-  })
-  async post(movieData: CreateMovieDto) {
-    const newMovie = new MovieSchema({
-      id: this.movies.length + 1,
+  async post(movieData: CreateMovieDto): Promise<Movie> {
+    const count = await this.movieModel.countDocuments().exec();
+
+    const newMovie = new this.movieModel({
+      id: count + 1, // Assuming id is provided in movieData
       ...movieData,
     });
     // this.movies.push(newMovie);
     try {
       const savedMovie = await newMovie.save();
-      console.log(savedMovie);
-      return savedMovie;
+
+      return savedMovie.toObject() as Movie;
     } catch (e) {
       console.error(e);
-      return { message: "영화 저장 실패" };
+      throw new Error("영화 저장 실패");
     }
   }
   patch(id: number, updateData: UpdateMovieDto) {

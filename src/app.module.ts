@@ -5,7 +5,6 @@ import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import * as process from "process";
 import { Connection } from "mongoose";
-import MovieSchema from "./movies/movies.schema";
 
 @Module({
   imports: [
@@ -13,10 +12,10 @@ import MovieSchema from "./movies/movies.schema";
 
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.MONGODB_URL,
+        // uri: process.env.MONGODB_URL,
+        uri: "mongodb://localhost:27017/shop",
       }),
     }),
-    MongooseModule.forFeature([{ name: "Movie", schema: MovieSchema }]),
     MoviesModule,
   ],
 
