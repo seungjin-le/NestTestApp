@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Movie } from "./entities/Movie.entity";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
-import { ApiResponse } from "@nestjs/swagger";
-import MovieSchema, { MovieDocument } from "./movies.schema";
+import { MovieDocument } from "./movies.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 
@@ -27,6 +26,7 @@ export class MoviesService {
     }
     return this.movies.find((movie) => movie.id === +id);
   }
+
   delete(id: number) {
     this.getDetail(id);
     this.movies = this.movies.filter((movie) => movie.id !== +id);
@@ -49,6 +49,7 @@ export class MoviesService {
       throw new Error("영화 저장 실패");
     }
   }
+
   patch(id: number, updateData: UpdateMovieDto) {
     const movie: Movie = this.getDetail(id);
     this.delete(id);

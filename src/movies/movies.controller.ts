@@ -1,13 +1,13 @@
-import { Body, Controller, Delete, Get, Header, Param, Patch, Post, Query, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
-import { ApiBody, ApiCreatedResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
 
+@ApiTags("영화 API")
 @Controller("movies")
-@ApiTags("Movies")
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
@@ -18,6 +18,7 @@ export class MoviesController {
     description: "영화 전체 목록을 조회",
     type: [Movie],
   })
+  @ApiResponse({ status: 400, description: "영화 전체 목록 조회 실패" })
   @ApiQuery({
     name: "page",
     required: false,
@@ -36,7 +37,6 @@ export class MoviesController {
       size,
     });
   }
-
   @Get("/:id")
   @ApiOperation({ summary: "영화 상세 조회" })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
@@ -51,7 +51,6 @@ export class MoviesController {
 
   @Post()
   @ApiOperation({ summary: "영화 생성", description: "영화를 생성한다." })
-  @ApiCreatedResponse({ description: "영화를 생성한다", type: CreateMovieDto })
   @ApiBody({ description: "영화를 생성한다.", type: CreateMovieDto })
   @ApiResponse({
     status: 200,
@@ -62,6 +61,7 @@ export class MoviesController {
   post(@Body() movieData: CreateMovieDto) {
     return this.moviesService.post(movieData);
   }
+
   @Patch("/:id")
   @ApiOperation({ summary: "영화 수정", description: "영화를 수정한다." })
   @ApiBody({ description: "영화를 수정한다.", type: UpdateMovieDto })
@@ -74,6 +74,7 @@ export class MoviesController {
   patch(@Param("id") movieId: number, @Body() updateData: UpdateMovieDto) {
     return this.moviesService.patch(movieId, updateData);
   }
+
   @Delete("/:id")
   @ApiOperation({ summary: "영화 삭제", description: "영화를 삭제한다." })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
