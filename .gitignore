@@ -31,4 +31,7 @@ lerna-debug.log*
 .idea
 /.vscode
 .vscode
+
+# misc
+.env
 /.env

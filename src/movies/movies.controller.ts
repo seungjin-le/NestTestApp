@@ -72,6 +72,11 @@ export class MoviesController {
   @ApiOperation({ summary: "영화 생성", description: "영화를 생성한다." })
   @ApiCreatedResponse({ description: "영화를 생성한다", type: CreateMovieDto })
   @ApiBody({ description: "영화를 생성한다.", type: CreateMovieDto })
+  @ApiResponse({
+    status: 200,
+    description: "영화 생성",
+    type: Movie,
+  })
   post(@Body() movieData: CreateMovieDto) {
     return this.moviesService.post(movieData);
   }
