@@ -11,7 +11,7 @@ import { DeleteMovieDto } from "./dto/delete-movie.dto";
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  @Get("/")
+  @Get()
   @ApiOperation({ summary: "영화 전체 목록 조회" })
   @ApiResponse({
     status: 200,
@@ -49,7 +49,7 @@ export class MoviesController {
     return this.moviesService.getDetail(movieId);
   }
 
-  @Post("movies-create")
+  @Post()
   @ApiOperation({ summary: "영화 생성", description: "영화를 생성한다." })
   @ApiBody({ description: "영화를 생성한다.", type: CreateMovieDto })
   @ApiResponse({
@@ -62,7 +62,7 @@ export class MoviesController {
     return this.moviesService.post(movieData);
   }
 
-  @Patch("/update/:id")
+  @Patch("/:id")
   @ApiOperation({ summary: "영화 수정", description: "영화를 수정한다." })
   @ApiBody({ description: "영화를 수정한다.", type: UpdateMovieDto })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
@@ -75,7 +75,7 @@ export class MoviesController {
     return this.moviesService.patch(movieId, updateData);
   }
 
-  @Delete("/delete/:id")
+  @Delete("/:id")
   @ApiOperation({ summary: "영화 삭제", description: "영화를 삭제한다." })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
   @ApiResponse({
