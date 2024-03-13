@@ -14,7 +14,7 @@ export class MoviesService {
   async getAll({ page, size }): Promise<Movie[]> {
     const movies = await this.movieModel.find().exec();
 
-    console.log(movies);
+    if (!movies) throw new NotFoundException("영화 목록이 없습니다.");
 
     return this.movies;
   }
