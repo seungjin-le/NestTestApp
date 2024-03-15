@@ -12,23 +12,29 @@ export class MoviesService {
   private movies: Movie[] = [];
 
   async getAll({ page, size }): Promise<Movie[]> {
-    const movies = await this.movieModel.find().exec();
+    const movies: any = await this.movieModel.find().exec();
 
     if (!movies) throw new NotFoundException("영화 목록이 없습니다.");
 
-    return this.movies;
+    return movies;
   }
 
-  getDetail(id: number) {
-    const movie = this.movies.find((movie) => movie.id === id);
-    if (!movie) {
-      throw new NotFoundException(`Movie with ID ${id} not found.`);
+  async getDetail(id: number): Promise<Movie> {
+    const testMovie = this.movies.find((movie) => movie.id === +id);
+    try {
+      const movie: MovieDocument | Movie | any = await this.movieModel.find().exec();
+
+      console.log(movie);
+    } catch (e) {
+      console.error(e);
     }
-    return this.movies.find((movie) => movie.id === +id);
+
+    return testMovie;
   }
 
   delete(id: number) {
-    this.getDetail(id);
+    const movie = this.getDetail(id);
+    if (!movie) throw new NotFoundException(`Movie with ID ${id} not found.`);
     this.movies = this.movies.filter((movie) => movie.id !== +id);
   }
 
@@ -39,10 +45,9 @@ export class MoviesService {
       id: count + 1, // Assuming id is provided in movieData
       ...movieData,
     });
-    // this.movies.push(newMovie);
+
     try {
       const savedMovie = await newMovie.save();
-
       return savedMovie.toObject() as Movie;
     } catch (e) {
       console.error(e);
@@ -51,8 +56,8 @@ export class MoviesService {
   }
 
   patch(id: number, updateData: UpdateMovieDto) {
-    const movie: Movie = this.getDetail(id);
+    // const movie: Movie = this.getDetail(id);
     this.delete(id);
-    this.movies.push({ ...movie, ...updateData });
+    // this.movies.push({ ...movie, ...updateData });
   }
 }
