@@ -22,8 +22,7 @@ export class MoviesService {
   async getDetail(id: number): Promise<Movie> {
     const testMovie = this.movies.find((movie) => movie.id === +id);
     try {
-      const movie: MovieDocument | Movie | any = await this.movieModel.find().exec();
-
+      const movie: MovieDocument | Movie | any = await this.movieModel.find((movie) => movie.id === +id).exec();
       console.log(movie);
     } catch (e) {
       console.error(e);
