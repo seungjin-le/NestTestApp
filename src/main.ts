@@ -1,6 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ValidationPipe } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 
 async function bootstrap() {
@@ -16,13 +16,6 @@ async function bootstrap() {
   );
 
   // Swagger 설정
-  setupSwagger(app);
-
-  // 애플리케이션 리스닝
-  await app.listen(3000);
-}
-
-function setupSwagger(app) {
   const options = new DocumentBuilder()
     .setTitle("NestJS 연습용 API Docs")
     .setDescription("NestJS 연습용")
@@ -33,6 +26,9 @@ function setupSwagger(app) {
 
   // Swagger UI가 사용할 endpoint 설정 (예: /api-docs)
   SwaggerModule.setup("api-docs", app, document);
+
+  // 애플리케이션 리스닝
+  await app.listen(3000);
 }
 
 bootstrap();

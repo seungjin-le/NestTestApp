@@ -2,12 +2,12 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from "@
 import { MoviesService } from "./movies.service";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
-import { ApiBody, ApiExcludeEndpoint, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
 
-@ApiTags("영화 API")
-@Controller("movies")
+@ApiTags("Movies")
+@Controller("api/v1/movies")
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
@@ -38,7 +38,7 @@ export class MoviesController {
     });
   }
 
-  @Get("/:id")
+  @Get(":id")
   @ApiOperation({ summary: "영화 상세 조회" })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
   @ApiResponse({
@@ -76,7 +76,7 @@ export class MoviesController {
     return this.moviesService.patch(movieId, updateData);
   }
 
-  @Delete("/:id")
+  @Delete(":id")
   @ApiOperation({ summary: "영화 삭제", description: "영화를 삭제한다." })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
   @ApiResponse({

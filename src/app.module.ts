@@ -4,15 +4,14 @@ import { MoviesModule } from "./movies/movies.module";
 import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { Connection } from "mongoose";
-import { MembersModule } from "./members/members.module";
+// import { MembersModule } from "./members/members.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        // uri: process.env.MONGODB_URL,
-        uri: "mongodb://localhost:27017/shop",
+        uri: process.env.MONGODB_URL,
       }),
     }),
     MoviesModule,
