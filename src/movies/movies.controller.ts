@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from "@
 import { MoviesService } from "./movies.service";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiExcludeEndpoint, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
 
@@ -37,6 +37,7 @@ export class MoviesController {
       size,
     });
   }
+
   @Get("/:id")
   @ApiOperation({ summary: "영화 상세 조회" })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })

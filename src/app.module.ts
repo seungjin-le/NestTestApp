@@ -1,15 +1,14 @@
 import { Module } from "@nestjs/common";
 import { MoviesModule } from "./movies/movies.module";
-import { AppController } from "./app.controller";
+
 import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
-import * as process from "process";
 import { Connection } from "mongoose";
+import { MembersModule } from "./members/members.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-
     MongooseModule.forRootAsync({
       useFactory: () => ({
         // uri: process.env.MONGODB_URL,
@@ -18,8 +17,7 @@ import { Connection } from "mongoose";
     }),
     MoviesModule,
   ],
-
-  controllers: [AppController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {
