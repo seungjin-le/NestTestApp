@@ -1,7 +1,8 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { MoviesModule } from "./movies/movies.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,9 +23,9 @@ async function bootstrap() {
     .setVersion("1.0.0")
     .build();
 
-  const document = SwaggerModule.createDocument(app, options);
+  const document = SwaggerModule.createDocument(app, options, {});
 
-  // Swagger UI가 사용할 endpoint 설정 (예: /api-docs)
+  // Swagger UI가 사용할 endpoint 설정
   SwaggerModule.setup("api-docs", app, document);
 
   // 애플리케이션 리스닝

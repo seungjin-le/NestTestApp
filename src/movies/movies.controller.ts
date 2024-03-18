@@ -6,13 +6,12 @@ import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from 
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
 
-@ApiTags("Movies")
-@Controller("api/v1/movies")
+@ApiTags("Movie")
+@Controller("movies")
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  @Get()
-  @ApiOperation({ summary: "영화 전체 목록 조회" })
+  @ApiOperation({ summary: "영화 전체 목록 조회", description: "영화 전체 목록을 조회한다." })
   @ApiResponse({
     status: 200,
     description: "영화 전체 목록을 조회",
@@ -31,14 +30,13 @@ export class MoviesController {
     type: Number,
     description: "페이지 사이즈",
   })
+  @Get()
   getAll(@Query("page") page: number, @Query("size") size: number) {
     return this.moviesService.getAll({
       page,
       size,
     });
   }
-
-  @Get(":id")
   @ApiOperation({ summary: "영화 상세 조회" })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
   @ApiResponse({
@@ -46,6 +44,7 @@ export class MoviesController {
     description: "영화 상세 조회",
     type: Movie,
   })
+  @Get(":id")
   getDetail(@Param("id") movieId: number) {
     return this.moviesService.getDetail(movieId);
   }
@@ -63,7 +62,7 @@ export class MoviesController {
     return this.moviesService.post(movieData);
   }
 
-  @Patch("/:id")
+  @Patch(":id")
   @ApiOperation({ summary: "영화 수정", description: "영화를 수정한다." })
   @ApiBody({ description: "영화를 수정한다.", type: UpdateMovieDto })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })

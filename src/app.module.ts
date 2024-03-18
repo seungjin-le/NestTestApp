@@ -8,13 +8,13 @@ import { Connection } from "mongoose";
 
 @Module({
   imports: [
+    MoviesModule,
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
     }),
-    MoviesModule,
   ],
   controllers: [],
   providers: [],
