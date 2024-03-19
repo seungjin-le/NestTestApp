@@ -1,16 +1,4 @@
-import {
-  applyDecorators,
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  UsePipes,
-  ValidationPipe,
-} from "@nestjs/common";
+import { applyDecorators, Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
@@ -26,7 +14,6 @@ function movies() {
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  @UsePipes(new ValidationPipe())
   @ApiOperation({ summary: "영화 전체 목록 조회", description: "영화 전체 목록을 조회한다." })
   @ApiResponse({
     status: 200,
@@ -93,7 +80,6 @@ export class CreateMovieController {
 @movies()
 export class DeleteMovieController {
   constructor(private readonly moviesService: MoviesService) {}
-
   @Delete(":id")
   @ApiOperation({ summary: "영화 삭제", description: "영화를 삭제한다." })
   @ApiParam({ name: "id", required: true, description: "영화 아이디" })
@@ -110,7 +96,6 @@ export class DeleteMovieController {
 @movies()
 export class PatchMoviesController {
   constructor(private readonly moviesService: MoviesService) {}
-
   @Patch(":id")
   @ApiOperation({ summary: "영화 수정", description: "영화를 수정한다." })
   @ApiBody({ description: "영화를 수정한다.", type: UpdateMovieDto })
