@@ -1,40 +1,21 @@
-import { applyDecorators, Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
+import {
+  apiBody,
+  apiOperation,
+  apiParam,
+  apiQuery,
+  apiRequest,
+  apiResponse,
+  controller,
+} from "../utiltys/apiDecorators";
 
-const movies = (tag: string, path: string) => {
-  return applyDecorators(ApiTags(tag), Controller(path));
-};
-
-const apiQuery = (name: string, required: boolean, type: any, description: string) => {
-  return ApiQuery({ name, required, type, description });
-};
-
-const apiParam = (name: string, required: boolean, description: string) => {
-  return ApiParam({ name, required, description });
-};
-
-const apiOperation = (summary: string, description: string) => {
-  return ApiOperation({ summary, description });
-};
-
-const apiResponse = (status: number, description: string, type?: any) => {
-  return ApiResponse({ status, description, type });
-};
-
-const apiRequest = (description: string, type: any) => {
-  return ApiBody({ description, type });
-};
-
-const apiBody = (options: { description: string; type: any }) => {
-  return ApiBody(options);
-};
-
-@movies("영화", "api/v1/movies")
+@controller("영화", "api/v1/movies")
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
   @Get()
@@ -51,7 +32,7 @@ export class MoviesController {
   }
 }
 
-@movies("영화", "api/v1/movies")
+@controller("영화", "api/v1/movies")
 export class GetDetailMovieController {
   constructor(private readonly moviesService: MoviesService) {}
 
@@ -65,7 +46,7 @@ export class GetDetailMovieController {
   }
 }
 
-@movies("영화", "api/v1/movies")
+@controller("영화", "api/v1/movies")
 export class CreateMovieController {
   constructor(private readonly moviesService: MoviesService) {}
 
@@ -80,7 +61,7 @@ export class CreateMovieController {
   }
 }
 
-@movies("영화", "api/v1/movies")
+@controller("영화", "api/v1/movies")
 export class DeleteMovieController {
   constructor(private readonly moviesService: MoviesService) {}
   @Delete(":id")
@@ -93,7 +74,7 @@ export class DeleteMovieController {
   }
 }
 
-@movies("영화", "api/v1/movies")
+@controller("영화", "api/v1/movies")
 export class PatchMoviesController {
   constructor(private readonly moviesService: MoviesService) {}
   @Patch(":id")
