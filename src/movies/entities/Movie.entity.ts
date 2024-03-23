@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class Movie {
   @ApiProperty({ type: Number })
-  id?: number;
+  id: number;
   @ApiProperty({ type: String })
   title: string;
   @ApiProperty({ type: Number })

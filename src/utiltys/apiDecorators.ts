@@ -1,14 +1,5 @@
 import { applyDecorators, Controller } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  APIBodyOptions,
-  APICtrlOptions,
-  APIOperationOptions,
-  APIParamOptions,
-  APIQueryOptions,
-  APIRequestOptions,
-  APIResponseOptions,
-} from "../types";
 
 /**
  * @param {string} tag API 컨트롤러 태그.

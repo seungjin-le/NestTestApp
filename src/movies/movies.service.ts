@@ -5,30 +5,32 @@ import { UpdateMovieDto } from "./dto/update-movie.dto";
 import { MovieDocument } from "./movies.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { find } from "rxjs";
 
 @Injectable()
 export class MoviesService {
   constructor(@InjectModel(Movie.name) private readonly movieModel: Model<MovieDocument>) {}
+
   private movies: Movie[] = [];
 
-  async getAll({ page, size }): Promise<Movie[]> {
-    const movies: any = await this.movieModel.find().exec();
-
-    if (!movies) throw new NotFoundException("영화 목록이 없습니다.");
-
-    return movies;
+  async getAll({ page, size }): Promise<Movie[] | any> {
+    try {
+      return await this.movieModel
+        .find()
+        .skip(size * (page - 1))
+        .limit(size)
+        .exec();
+    } catch (e) {
+      throw new NotFoundException("영화 목록이 없습니다.");
+    }
   }
 
-  async getDetail(id: number): Promise<Movie> {
-    const testMovie = this.movies.find((movie) => movie.id === +id);
+  async getDetail(id: number): Promise<Movie | any> {
     try {
-      const movie: MovieDocument | Movie | any = await this.movieModel.find((movie) => movie.id === +id).exec();
-      console.log(movie);
+      return await this.movieModel.find({ id }).exec();
     } catch (e) {
-      console.error(e);
+      throw new NotFoundException(`Movie with ID ${id} not found.`);
     }
-
-    return testMovie;
   }
 
   delete(id: number) {
