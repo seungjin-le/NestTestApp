@@ -40,14 +40,13 @@ export class MoviesService {
   }
 
   async post(movieData: CreateMovieDto): Promise<Movie> {
-    const count = await this.movieModel.countDocuments().exec();
-
-    const newMovie = new this.movieModel({
-      id: count + 1, // Assuming id is provided in movieData
-      ...movieData,
-    });
-
     try {
+      const count = await this.movieModel.countDocuments().exec();
+
+      const newMovie = new this.movieModel({
+        ...movieData,
+        id: count + 1,
+      });
       const savedMovie = await newMovie.save();
       return savedMovie.toObject() as Movie;
     } catch (e) {
@@ -57,7 +56,13 @@ export class MoviesService {
   }
 
   patch(id: number, updateData: UpdateMovieDto) {
-    // const movie: Movie = this.getDetail(id);
+    try {
+      const movie = this.getDetail(id);
+      const newMovie = { ...movie, ...updateData };
+      console.log(updateData, movie);
+      console.log(movie);
+    } catch (e) {}
+
     this.delete(id);
     // this.movies.push({ ...movie, ...updateData });
   }
