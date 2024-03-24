@@ -5,6 +5,7 @@ export class CreateMovieDto {
   @IsString()
   @ApiProperty({ type: String, description: "영화 제목" })
   readonly title: string;
+
   @IsNumber()
   @ApiProperty({ type: Number, description: "영화 개봉 연도" })
   readonly year: number;

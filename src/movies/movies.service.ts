@@ -5,14 +5,12 @@ import { UpdateMovieDto } from "./dto/update-movie.dto";
 import { MovieDocument } from "./movies.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { find } from "rxjs";
 
 @Injectable()
 export class MoviesService {
   constructor(@InjectModel(Movie.name) private readonly movieModel: Model<MovieDocument>) {}
 
-  private movies: Movie[] = [];
-
+  // 전체 조회 API
   async getAll({ page, size }): Promise<Movie[] | any> {
     try {
       return await this.movieModel
@@ -25,15 +23,16 @@ export class MoviesService {
     }
   }
 
-  async getDetail(id: number): Promise<Movie | any> {
+  // 상세 조회 API
+  async getDetail(id: number): Promise<Movie | unknown> {
     try {
       return await this.movieModel.find({ id }).exec();
     } catch (e) {
-      throw new NotFoundException(`Movie with ID ${id} not found.`);
+      throw new NotFoundException(`해당 정보가 없습니다. (${id})`);
     }
   }
 
-  async delete(id: number) {
+  async delete(id: number): Promise<{ data: Promise<Movie | unknown>; message: string }> {
     try {
       const movie = this.getDetail(id);
       await this.movieModel.deleteOne({ id }).exec();
@@ -46,7 +45,8 @@ export class MoviesService {
     }
   }
 
-  async post(movieData: CreateMovieDto): Promise<Movie> {
+  // 생성 API
+  async post(movieData: CreateMovieDto): Promise<Movie | unknown> {
     try {
       const count = await this.movieModel.countDocuments().exec();
 
@@ -62,15 +62,13 @@ export class MoviesService {
     }
   }
 
-  patch(id: number, updateData: UpdateMovieDto) {
+  // 업데이트 API
+  async patch(id: number, updateData: UpdateMovieDto): Promise<Movie | unknown> {
     try {
-      const movie = this.getDetail(id);
-      const newMovie = { ...movie, ...updateData };
-      console.log(updateData, movie);
-      console.log(movie);
-    } catch (e) {}
-
-    this.delete(id);
-    // this.movies.push({ ...movie, ...updateData });
+      return await this.movieModel.findOneAndUpdate({ id }, updateData, { new: true }).exec();
+    } catch (e) {
+      console.error(e);
+      throw new Error("영화 업데이트 실패");
+    }
   }
 }
