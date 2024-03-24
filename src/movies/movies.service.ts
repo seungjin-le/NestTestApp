@@ -33,10 +33,17 @@ export class MoviesService {
     }
   }
 
-  delete(id: number) {
-    const movie = this.getDetail(id);
-    if (!movie) throw new NotFoundException(`Movie with ID ${id} not found.`);
-    this.movies = this.movies.filter((movie) => movie.id !== +id);
+  async delete(id: number) {
+    try {
+      const movie = this.getDetail(id);
+      await this.movieModel.deleteOne({ id }).exec();
+      return {
+        message: "영화 삭제 성공",
+        data: movie,
+      };
+    } catch (e) {
+      throw new Error("영화 삭제 실패");
+    }
   }
 
   async post(movieData: CreateMovieDto): Promise<Movie> {
