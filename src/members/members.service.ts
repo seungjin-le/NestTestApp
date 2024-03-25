@@ -7,15 +7,16 @@ import { MemberDocument } from "./members.schema";
 @Injectable()
 export class MembersService {
   constructor(@InjectModel(Member.name) private readonly membersModel: Model<MemberDocument>) {}
-  private members: Member[] = [];
 
-  async getAll({ page, size }): Promise<Member[]> {
+  async getAll({ page, size }): Promise<Member[] | unknown> {
     try {
-      const members: any = await this.membersModel.find().exec();
-
-      return members;
+      return await this.membersModel
+        .find()
+        .skip(size * (page - 1))
+        .limit(size)
+        .exec();
     } catch (e) {
-      throw new NotFoundException("영화 목록이 없습니다.");
+      throw new NotFoundException("멤버 목록이 없습니다.");
     }
   }
 }

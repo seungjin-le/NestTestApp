@@ -24,7 +24,7 @@ export class MoviesService {
   }
 
   // 상세 조회 API
-  async getDetail(id: number): Promise<Movie | unknown> {
+  async getDetail(id: number): Promise<Movie | any> {
     try {
       return await this.movieModel.find({ id }).exec();
     } catch (e) {
@@ -32,7 +32,7 @@ export class MoviesService {
     }
   }
 
-  async delete(id: number): Promise<{ data: Promise<Movie | unknown>; message: string }> {
+  async delete(id: number): Promise<{ data: Promise<Movie | any>; message: string }> {
     try {
       const movie = this.getDetail(id);
       await this.movieModel.deleteOne({ id }).exec();
@@ -46,7 +46,7 @@ export class MoviesService {
   }
 
   // 생성 API
-  async post(movieData: CreateMovieDto): Promise<Movie | unknown> {
+  async post(movieData: CreateMovieDto): Promise<Movie | any> {
     try {
       const count = await this.movieModel.countDocuments().exec();
 
@@ -63,7 +63,7 @@ export class MoviesService {
   }
 
   // 업데이트 API
-  async patch(id: number, updateData: UpdateMovieDto): Promise<Movie | unknown> {
+  async patch(id: number, updateData: UpdateMovieDto): Promise<Movie | any> {
     try {
       return await this.movieModel.findOneAndUpdate({ id }, updateData, { new: true }).exec();
     } catch (e) {
