@@ -7,7 +7,7 @@ import { Member } from "./entities/Members.entity";
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Member.name, schema: MembersSchema.schema }])],
-  providers: [MembersService],
-  controllers: [MembersController, MembersSchema],
+  controllers: [MembersController],
+  providers: [MembersService, MembersSchema],
 })
 export class MembersModule {}

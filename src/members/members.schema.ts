@@ -9,7 +9,7 @@ export interface MemberDocument extends Document {
   id: number;
   name: string;
   age: number;
-  gender: string[];
+  gender: string;
 }
 
 const Member = new Schema<MemberDocument>(
@@ -17,7 +17,7 @@ const Member = new Schema<MemberDocument>(
     id: { type: Number, required: true },
     name: { type: String, required: true },
     age: { type: Number, required: true },
-    gender: { type: [String], required: false },
+    gender: { type: String, required: false },
   },
   options
 );

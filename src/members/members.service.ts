@@ -19,4 +19,49 @@ export class MembersService {
       throw new NotFoundException("멤버 목록이 없습니다.");
     }
   }
+
+  async getDetail(id: number): Promise<Member | unknown> {
+    try {
+      return await this.membersModel.find({ id }).exec();
+    } catch (e) {
+      throw new NotFoundException("멤버 목록이 없습니다.");
+    }
+  }
+
+  async delete(id: number): Promise<{ data: Promise<Member | unknown>; message: string }> {
+    try {
+      const member = this.getDetail(id);
+      await this.membersModel.deleteOne({ id }).exec();
+      return {
+        message: "멤버 삭제 성공",
+        data: member,
+      };
+    } catch (e) {
+      throw new Error("멤버 삭제 실패");
+    }
+  }
+
+  async post(memberData: Member): Promise<Member | unknown> {
+    try {
+      const count = await this.membersModel.countDocuments().exec();
+      const newMember = new this.membersModel({
+        ...memberData,
+        id: count + 1,
+      });
+      const savedMember = await newMember.save();
+      return savedMember.toObject() as Member;
+    } catch (e) {
+      console.error(e);
+      throw new Error("멤버 생성 실패");
+    }
+  }
+
+  async patch({ id, memberData }): Promise<Member | unknown> {
+    try {
+      await this.membersModel.updateOne({ id }, { $set: memberData }).exec();
+      return this.getDetail(id);
+    } catch (e) {
+      throw new Error("멤버 수정 실패");
+    }
+  }
 }

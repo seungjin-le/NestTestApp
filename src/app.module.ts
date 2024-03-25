@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
 import { MoviesModule } from "./movies/movies.module";
-
 import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { Connection } from "mongoose";
-// import { MembersModule } from "./members/members.module";
+import { MembersModule } from "./members/members.module";
 
 @Module({
   imports: [
     MoviesModule,
+    MembersModule,
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       useFactory: () => ({

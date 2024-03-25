@@ -11,6 +11,6 @@ export class CreateMembersDto {
 
   @IsOptional()
   @IsString({ each: true })
-  @ApiProperty({ type: [String], description: "성별" })
+  @ApiProperty({ type: String, description: "성별" })
   readonly gender: string;
 }
