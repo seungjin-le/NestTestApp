@@ -56,7 +56,7 @@ export class MembersService {
     }
   }
 
-  async patch({ id, memberData }): Promise<Member | unknown> {
+  async patch({ id, memberData }: { id: number; memberData: Member }): Promise<Member | unknown> {
     try {
       await this.membersModel.updateOne({ id }, { $set: memberData }).exec();
       return this.getDetail(id);
