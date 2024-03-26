@@ -1,7 +1,10 @@
-import { Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { MembersService } from "./members.service";
 import { apiOperation, apiResponse, controller } from "../utiltys/apiDecorators";
 import { Member } from "./entities/Members.entity";
+import { UpdateMembersDto } from "./dto/update-members.dto";
+import { CreateMembersDto } from "./dto/create-members.dto";
+import { DeleteMembersDto } from "./dto/delete-members.dto";
 
 @controller("유저", "api/v1/users")
 export class MembersController {
@@ -37,7 +40,7 @@ export class MembersDeleteController {
 
   @Delete(":id")
   @apiOperation("멤버 삭제", "멤버를 삭제한다.")
-  @apiResponse(200, "멤버 삭제", Member)
+  @apiResponse(200, "멤버 삭제", DeleteMembersDto)
   @apiResponse(404, "멤버 삭제 실패")
   @apiResponse(500, "서버 에러")
   @apiResponse(400, "잘못된 요청")
@@ -55,14 +58,14 @@ export class MembersPostController {
 
   @Post()
   @apiOperation("멤버 생성", "멤버를 생성한다.")
-  @apiResponse(200, "멤버 생성", Member)
+  @apiResponse(200, "멤버 생성", CreateMembersDto)
   @apiResponse(404, "멤버 생성 실패")
   @apiResponse(500, "서버 에러")
   @apiResponse(400, "잘못된 요청")
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  post(memberData: Member) {
+  post(@Body() memberData: Member) {
     return this.membersService.post(memberData);
   }
 }
@@ -73,14 +76,14 @@ export class MembersPatchController {
 
   @Patch(":id")
   @apiOperation("멤버 수정", "멤버를 수정한다.")
-  @apiResponse(200, "멤버 수정", Member)
+  @apiResponse(200, "멤버 수정", UpdateMembersDto)
   @apiResponse(404, "멤버 수정 실패")
   @apiResponse(500, "서버 에러")
   @apiResponse(400, "잘못된 요청")
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  patch(@Param("id") id: number, memberData: Member) {
+  patch(@Param("id") id: number, @Body() memberData: Member) {
     return this.membersService.patch({ id, memberData });
   }
 }
