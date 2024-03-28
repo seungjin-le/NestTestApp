@@ -62,6 +62,11 @@ export class DeleteMovieController {
   @apiParam("id", true, "영화 아이디")
   @apiResponse(200, "영화 삭제", DeleteMovieDto)
   @apiResponse(404, "영화 삭제 실패")
+  @apiResponse(500, "서버 에러")
+  @apiResponse(400, "잘못된 요청")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
   delete(@Param("id") movieId: number) {
     return this.moviesService.delete(movieId);
   }
@@ -75,6 +80,11 @@ export class PatchMoviesController {
   @apiOperation("영화 수정", "영화를 수정한다.")
   @apiResponse(200, "영화 수정", Movie)
   @apiResponse(404, "영화 수정 실패")
+  @apiResponse(500, "서버 에러")
+  @apiResponse(400, "잘못된 요청")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
   @apiBody("영화를 수정한다.", UpdateMovieDto)
   patch(@Param("id") movieId: number, @Body() updateData: UpdateMovieDto) {
     return this.moviesService.patch(movieId, updateData);
