@@ -33,6 +33,11 @@ export class GetDetailMovieController {
   @apiOperation("영화 상세 조회", "영화 상세를 조회한다.")
   @apiResponse(200, "영화 상세 조회", Movie)
   @apiResponse(404, "영화 상세 조회 실패")
+  @apiResponse(500, "서버 에러")
+  @apiResponse(400, "잘못된 요청")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
   @apiParam("id", true, "영화 아이디")
   getDetail(@Param("id") movieId: number) {
     return this.moviesService.getDetail(movieId);
