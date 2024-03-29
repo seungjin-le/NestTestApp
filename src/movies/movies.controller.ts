@@ -15,6 +15,11 @@ export class MoviesController {
   @apiOperation("영화 전체 목록 조회", "영화 전체 목록을 조회한다.")
   @apiResponse(200, "영화 전체 목록 조회", [Movie])
   @apiResponse(404, "영화 전체 목록 조회 실패")
+  @apiResponse(500, "서버 에러")
+  @apiResponse(400, "잘못된 요청")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
   @apiQuery("page", false, Number, "페이지 번호")
   @apiQuery("size", false, Number, "페이지 사이즈")
   getAll(@Query("page") page: number, @Query("size") size: number) {
@@ -52,6 +57,11 @@ export class CreateMovieController {
   @apiOperation("영화 생성", "영화를 생성.")
   @apiResponse(200, "영화 생성", Movie)
   @apiResponse(404, "영화 생성 실패")
+  @apiResponse(500, "서버 에러")
+  @apiResponse(400, "잘못된 요청")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
   @apiBody("영화를 생성한다.", CreateMovieDto)
   post(@Body() movieData: CreateMovieDto) {
     return this.moviesService.post(movieData);
