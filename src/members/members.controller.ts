@@ -4,7 +4,6 @@ import { apiOperation, apiResponse, controller } from "../utiltys/apiDecorators"
 import { Member } from "./entities/Members.entity";
 import { UpdateMembersDto } from "./dto/update-members.dto";
 import { CreateMembersDto } from "./dto/create-members.dto";
-import { DeleteMembersDto } from "./dto/delete-members.dto";
 
 @controller("유저", "api/v1/users")
 export class MembersController {
@@ -39,24 +38,6 @@ export class MembersDetailController {
   @apiResponse(405, "허용되지 않음")
   getDetail(@Param("id") id: number) {
     return this.membersService.getDetail(id);
-  }
-}
-
-@controller("유저", "api/v1/users")
-export class MembersDeleteController {
-  constructor(private readonly membersService: MembersService) {}
-
-  @Delete(":id")
-  @apiOperation("멤버 삭제", "멤버를 삭제한다.")
-  @apiResponse(200, "멤버 삭제", DeleteMembersDto)
-  @apiResponse(404, "멤버 삭제 실패")
-  @apiResponse(500, "서버 에러")
-  @apiResponse(400, "잘못된 요청")
-  @apiResponse(401, "권한 없음")
-  @apiResponse(403, "금지됨")
-  @apiResponse(405, "허용되지 않음")
-  delete(@Param("id") id: number) {
-    return this.membersService.delete(id);
   }
 }
 

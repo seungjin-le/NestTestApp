@@ -13,13 +13,7 @@ import { Member } from "./entities/Members.entity";
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Member.name, schema: MembersSchema.schema }])],
-  controllers: [
-    MembersController,
-    MembersDetailController,
-    MembersDeleteController,
-    MembersPatchController,
-    MembersPostController,
-  ],
+  controllers: [MembersController, MembersDetailController, MembersPatchController, MembersPostController],
   providers: [MembersService, MembersSchema],
 })
 export class MembersModule {}
