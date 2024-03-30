@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { MembersService } from "./members.service";
 import {
   MembersController,
-  MembersDeleteController,
   MembersDetailController,
   MembersPatchController,
   MembersPostController,

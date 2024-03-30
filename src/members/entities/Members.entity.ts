@@ -10,3 +10,17 @@ export class Member {
   @ApiProperty({ type: String })
   gender: string;
 }
+
+export class CreateMemberDto {
+  @ApiProperty({ type: String })
+  email: string;
+  @ApiProperty({ type: String })
+  password: string;
+}
+
+export class LoginMemberDto {
+  @ApiProperty({ type: String })
+  email: string;
+  @ApiProperty({ type: String })
+  password: string;
+}

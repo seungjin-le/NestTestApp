@@ -3,63 +3,62 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Member } from "./entities/Members.entity";
 import { MemberDocument } from "./members.schema";
+import { LoginMembersDto } from "./dto/login-members.dto";
 
 @Injectable()
 export class MembersService {
-  constructor( @InjectModel( Member.name ) private readonly membersModel: Model<MemberDocument> ) {
-  }
+  constructor(@InjectModel(Member.name) private readonly membersModel: Model<MemberDocument>) {}
 
-  async getAll( { page, size } ): Promise<Member[] | unknown> {
+  async getAll({ page, size }): Promise<Member[] | unknown> {
     try {
       return await this.membersModel
         .find()
-        .skip( size * (page - 1) )
-        .limit( size )
+        .skip(size * (page - 1))
+        .limit(size)
         .exec();
-    } catch( e ) {
-      throw new NotFoundException( "멤버 목록이 없습니다." );
+    } catch (e) {
+      throw new NotFoundException("멤버 목록이 없습니다.");
     }
   }
 
-  async getDetail( id: number ): Promise<Member | unknown> {
+  async getDetail(id: number): Promise<Member | unknown> {
     try {
-      return await this.membersModel.find( { id } ).exec();
-    } catch( e ) {
-      throw new NotFoundException( "멤버 목록이 없습니다." );
+      return await this.membersModel.find({ id }).exec();
+    } catch (e) {
+      throw new NotFoundException("멤버 목록이 없습니다.");
     }
   }
 
-  async post( memberData: Member ): Promise<Member | unknown> {
+  async post(memberData: Member): Promise<Member | unknown> {
     try {
       const count = await this.membersModel.countDocuments().exec();
-      const newMember = new this.membersModel( {
+      const newMember = new this.membersModel({
         ...memberData,
-        id : count + 1,
-      } );
+        id: count + 1,
+      });
       const savedMember = await newMember.save();
       return savedMember.toObject() as Member;
-    } catch( e ) {
-      console.error( e );
-      throw new Error( "멤버 생성 실패" );
+    } catch (e) {
+      console.error(e);
+      throw new Error("멤버 생성 실패");
     }
   }
 
-  async patch( { id, memberData }: { id: number; memberData: Member } ): Promise<Member | unknown> {
+  async patch({ id, memberData }: { id: number; memberData: Member }): Promise<Member | unknown> {
     try {
-      await this.membersModel.updateOne( { id }, { $set : memberData } ).exec();
-      return this.getDetail( id );
-    } catch( e ) {
-      throw new Error( "멤버 수정 실패" );
+      await this.membersModel.updateOne({ id }, { $set: memberData }).exec();
+      return this.getDetail(id);
+    } catch (e) {
+      throw new Error("멤버 수정 실패");
     }
   }
 
-  async postSignUp( { id, memberData }: { id: number; memberData: Member } ): Promise<Member | unknown> {
+  async postLogin({ memberData }: { memberData: LoginMembersDto }) {
     try {
-      await this.membersModel.updateOne( { id }, {
-        $push : {
-          join : memberData,
-        },
-      } ).exec();
+      const member = await this.membersModel.findOne;
+      return member;
+    } catch (e) {
+      throw new Error("로그인 실패");
     }
   }
 }
