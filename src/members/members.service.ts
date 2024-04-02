@@ -29,7 +29,7 @@ export class MembersService {
     }
   }
 
-  async post(memberData: Member): Promise<Member | unknown> {
+  async postSingUp(memberData: Member): Promise<Member | unknown> {
     try {
       const count = await this.membersModel.countDocuments().exec();
       const newMember = new this.membersModel({

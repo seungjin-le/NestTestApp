@@ -55,7 +55,7 @@ export class MembersPostController {
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
   post(@Body() memberData: Member) {
-    return this.membersService.post(memberData);
+    return this.membersService.postSingUp(memberData);
   }
 }
 
