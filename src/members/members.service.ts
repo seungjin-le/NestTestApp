@@ -4,10 +4,14 @@ import { Model } from "mongoose";
 import { Member } from "./entities/Members.entity";
 import { MemberDocument } from "./members.schema";
 import { LoginMembersDto } from "./dto/login-members.dto";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class MembersService {
-  constructor(@InjectModel(Member.name) private readonly membersModel: Model<MemberDocument>) {}
+  constructor(
+    @InjectModel(Member.name) private readonly membersModel: Model<MemberDocument>,
+    private jwtService: JwtService
+  ) {}
 
   async getAll({ page, size }): Promise<Member[] | unknown> {
     try {
@@ -55,8 +59,10 @@ export class MembersService {
 
   async postLogin({ memberData }: { memberData: LoginMembersDto }) {
     try {
-      const member = await this.membersModel.findOne;
-      return member;
+      const payload = { memberData };
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
     } catch (e) {
       throw new Error("로그인 실패");
     }
