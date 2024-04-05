@@ -4,6 +4,7 @@ import { apiOperation, apiResponse, controller } from "../utiltys/apiDecorators"
 import { Member } from "./entities/Members.entity";
 import { UpdateMembersDto } from "./dto/update-members.dto";
 import { CreateMembersDto } from "./dto/create-members.dto";
+import { LoginMembersDto } from "./dto/login-members.dto";
 
 @controller("유저", "api/v1/users")
 export class MembersController {
@@ -38,6 +39,24 @@ export class MembersDetailController {
   @apiResponse(405, "허용되지 않음")
   getDetail(@Param("id") id: number) {
     return this.membersService.getDetail(id);
+  }
+}
+
+@controller("유저", "api/v1/users")
+export class MembersPostLoginController {
+  constructor(private readonly membersService: MembersService) {}
+
+  @Post("/login")
+  @apiOperation("멤버 로그인", "멤버를 로그인한다.")
+  @apiResponse(200, "멤버 로그인", CreateMembersDto)
+  @apiResponse(404, "멤버 로그인 실패")
+  @apiResponse(500, "서버 에러")
+  @apiResponse(400, "잘못된 요청")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
+  post(@Body() memberData: LoginMembersDto) {
+    return this.membersService.postLogin(memberData);
   }
 }
 

@@ -2,15 +2,15 @@ import mongoose, { SchemaOptions, Schema, Document } from "mongoose";
 
 const options: SchemaOptions = {
   timestamps: true,
-  collection: "members",
+  collection: "auth",
 };
 
-export interface MemberDocument extends Document {
+export interface AuthDocument extends Document {
   email: string;
   password: string;
 }
 
-const Member = new Schema<MemberDocument>(
+const Auth = new Schema<AuthDocument>(
   {
     id: { type: Number, required: true },
     email: { type: String, required: true },
@@ -19,5 +19,5 @@ const Member = new Schema<MemberDocument>(
   options
 );
 
-const MembersSchema = mongoose.model<MemberDocument>("Member", Member);
-export default MembersSchema;
+const AuthSchema = mongoose.model<AuthDocument>("Auth", Auth);
+export default AuthSchema;

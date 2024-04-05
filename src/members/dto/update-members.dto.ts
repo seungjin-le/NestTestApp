@@ -1,17 +1,16 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateMembersDto {
-  @IsString()
-  @ApiProperty({ type: String })
-  readonly name: string;
-
   @IsNumber()
   @ApiProperty({ type: Number })
-  readonly age: number;
+  readonly id: string;
 
-  @IsOptional()
-  @IsString({ each: true })
+  @IsString()
   @ApiProperty({ type: String })
-  readonly gender: string;
+  readonly email: number;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  readonly password: string;
 }
