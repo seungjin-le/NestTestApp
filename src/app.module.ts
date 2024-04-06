@@ -4,13 +4,14 @@ import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { Connection } from "mongoose";
 import { MembersModule } from "./members/members.module";
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { AuthModule } from "./auth/auth.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
     MoviesModule,
     MembersModule,
+    UserModule,
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       useFactory: () => ({

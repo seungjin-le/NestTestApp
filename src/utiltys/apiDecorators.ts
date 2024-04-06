@@ -41,13 +41,14 @@ export const apiOperation = (summary: string, description: string): MethodDecora
 };
 
 /**
- * @param {number} status
- * @param {string} description
- * @param {any} type
+ * @param {number} status HTTP 상태 코드.
+ * @param {string} description API 응답 설명.
+ * @param {any} type API 응답 타입.
+ * @param {any} options API 응답 옵션.
  * @returns {MethodDecorator}
  */
-export const apiResponse = (status: number, description: string, type?: any): MethodDecorator => {
-  return ApiResponse({ status, description, type });
+export const apiResponse = (status: number, description: string, type?: any, options?: Object): MethodDecorator => {
+  return ApiResponse({ status, description, type, ...options });
 };
 
 /**

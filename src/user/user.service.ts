@@ -1,26 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { LoginUserDto } from "./dto/login-user.dto";
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  getAll({ page, limit }: { page: number; limit: number }) {
+    return `${page} ${limit} This action returns all user`;
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
-
-  findOne(id: number) {
+  getDetail(id: number) {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  patch(body: UpdateUserDto) {
+    return `This action updates a user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  postLogin(body: LoginUserDto) {
+    return `This action removes a  user`;
+  }
+
+  postJoin(createUserDto: CreateUserDto) {
+    return "This action adds a new user";
   }
 }
