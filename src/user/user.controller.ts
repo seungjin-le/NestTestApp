@@ -1,19 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { apiOperation, apiResponse, controller } from "../utiltys/apiDecorators";
+import { apiBody, apiOperation, apiResponse, controller } from "../utiltys/apiDecorators";
 import { LoginUserDto } from "./dto/login-user.dto";
-import { ApiBody, ApiParam } from "@nestjs/swagger";
+import { ApiBody, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "./dto/getAll-user.dto";
+import * as bcrypt from "bcrypt";
 
-@controller("user", "User")
+@controller("user", "api/v1/user")
 export class UserGetAllController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiParam({ name: "page", type: Number })
-  @ApiParam({ name: "size", type: Number })
+  @ApiQuery({ name: "page", type: Number, description: "페이지 번호" })
+  @ApiQuery({ name: "size", type: Number, description: "페이지 사이즈" })
   @apiOperation("유저 조회", "유저 전체를 조회.")
   @apiResponse(200, "유저 전체 조회", GetAllUserDto)
   @apiResponse(404, "유저 전체 조회 실패", {})
@@ -22,12 +23,12 @@ export class UserGetAllController {
   @apiResponse(401, "권한 없음", {})
   @apiResponse(403, "금지됨", {})
   @apiResponse(405, "허용되지 않음", {})
-  getAll(@Param("page") page: number, @Param("size") limit: number) {
+  getAll(@Query("page") page: number, @Query("size") limit: number) {
     return this.userService.getAll({ page, limit });
   }
 }
 
-@controller("user", "User")
+@controller("user", "api/v1/user")
 export class UserGetDetailController {
   constructor(private readonly userService: UserService) {}
 
@@ -37,7 +38,7 @@ export class UserGetDetailController {
   }
 }
 
-@controller("user", "User")
+@controller("user", "api/v1/user")
 export class UserPostLoginController {
   constructor(private readonly userService: UserService) {}
 
@@ -47,18 +48,28 @@ export class UserPostLoginController {
   }
 }
 
-@controller("user", "User")
+@controller("user", "api/v1/user")
 export class UserPostJoinController {
   constructor(private readonly userService: UserService) {}
 
   @Post("join")
-  @ApiBody({ type: CreateUserDto })
-  postJoin(@Body() body: CreateUserDto) {
-    return this.userService.postJoin(body);
+  @apiBody("유저 정보", CreateUserDto)
+  async postJoin(@Body() body: CreateUserDto) {
+    console.log(body);
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const checkPassword = await bcrypt.compare(
+      body.password,
+      "$2b$10$7Fd1lMqTS26pGbobbou5IerFZGP2MLNyMzUvh5tfTbpCwJVG9c3oe"
+    );
+    console.log(checkPassword);
+    return {
+      hashedPassword,
+    };
+    // return this.userService.postJoin(body);
   }
 }
 
-@controller("user", "User")
+@controller("user", "api/v1/user")
 export class UserPatchController {
   constructor(private readonly userService: UserService) {}
 

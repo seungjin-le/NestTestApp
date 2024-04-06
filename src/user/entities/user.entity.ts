@@ -29,15 +29,15 @@ export class UserEntity {
 
   @ApiProperty({ type: String })
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty({ type: String })
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
   @ApiProperty({ type: Date })
   @DeleteDateColumn()
-  deleted_at: Date;
+  deletedAt: Date;
 
   @BeforeInsert()
   private beforeInsert() {
