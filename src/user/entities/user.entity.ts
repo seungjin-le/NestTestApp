@@ -1,13 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  BeforeInsert,
-} from "typeorm";
-import * as bcrypt from "bcrypt";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
 @Entity({ name: "user" })
@@ -38,9 +29,4 @@ export class UserEntity {
   @ApiProperty({ type: Date })
   @DeleteDateColumn()
   deletedAt: Date;
-
-  @BeforeInsert()
-  private beforeInsert() {
-    this.password = bcrypt.hashSync(this.password, 10);
-  }
 }

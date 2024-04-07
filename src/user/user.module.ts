@@ -10,9 +10,15 @@ import {
 import { MongooseModule } from "@nestjs/mongoose";
 import { UserEntity } from "./entities/user.entity";
 import UserSchema from "./user.schema";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema.schema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema.schema }]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+    }),
+  ],
   controllers: [
     UserGetAllController,
     UserGetDetailController,

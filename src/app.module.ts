@@ -5,6 +5,7 @@ import { ConfigModule } from "@nestjs/config";
 import { Connection } from "mongoose";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from "./user/user.module";
         uri: process.env.MONGODB_URL,
       }),
     }),
+
     AuthModule,
     UserModule,
   ],

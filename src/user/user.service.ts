@@ -7,10 +7,14 @@ import { UserEntity } from "./entities/user.entity";
 import { Model } from "mongoose";
 import { UserDocument } from "./user.schema";
 import * as bcrypt from "bcrypt";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>,
+    private readonly jwtService: JwtService
+  ) {}
 
   async getAll({ page, limit }: { page: number; limit: number }) {
     try {
@@ -46,11 +50,15 @@ export class UserService {
           status: 400,
           message: "비밀번호가 일치하지 않습니다.",
         };
+      const token = {
+        accessToken: this.jwtService.signAsync({ email: user.email, sub: user.id }).then((res) => res),
+        refreshToken: this.jwtService.signAsync({ email: user.email, sub: user.id }).then((res) => res),
+      };
+      console.log(token);
       return {
         status: 200,
-        accessToken: "accessToken",
-        refreshToken: "refreshToken",
         message: "로그인 성공",
+        data: token,
       };
     } catch (error) {
       throw new Error("로그인 실패");
