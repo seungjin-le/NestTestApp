@@ -35,11 +35,26 @@ export class UserService {
   }
 
   async postLogin(body: LoginUserDto) {
-    const checkPassword = await bcrypt.compare(
-      body.password,
-      "$2b$10$7Fd1lMqTS26pGbobbou5IerFZGP2MLNyMzUvh5tfTbpCwJVG9c3oe"
-    );
-    return `This action removes a  user`;
+    try {
+      const { email, password } = body;
+      const user = await this.userModel.findOne({ email }).exec();
+
+      const checkPassword = await bcrypt.compare(password, user.password);
+
+      if (!checkPassword)
+        return {
+          status: 400,
+          message: "비밀번호가 일치하지 않습니다.",
+        };
+      return {
+        status: 200,
+        accessToken: "accessToken",
+        refreshToken: "refreshToken",
+        message: "로그인 성공",
+      };
+    } catch (error) {
+      throw new Error("로그인 실패");
+    }
   }
 
   async postJoin(body: CreateUserDto) {
