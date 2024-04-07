@@ -54,18 +54,8 @@ export class UserPostJoinController {
 
   @Post("join")
   @apiBody("유저 정보", CreateUserDto)
-  async postJoin(@Body() body: CreateUserDto) {
-    console.log(body);
-    const hashedPassword = await bcrypt.hash(body.password, 10);
-    const checkPassword = await bcrypt.compare(
-      body.password,
-      "$2b$10$7Fd1lMqTS26pGbobbou5IerFZGP2MLNyMzUvh5tfTbpCwJVG9c3oe"
-    );
-    console.log(checkPassword);
-    return {
-      hashedPassword,
-    };
-    // return this.userService.postJoin(body);
+  postJoin(@Body() body: CreateUserDto) {
+    return this.userService.postJoin(body);
   }
 }
 
