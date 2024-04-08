@@ -33,6 +33,10 @@ export class UserGetDetailController {
   constructor(private readonly userService: UserService) {}
 
   @Get(":id")
+  @ApiParam({ name: "id", type: Number, description: "유저 아이디" })
+  @apiOperation("유저 상세 조회", "유저 상세를 조회.")
+  @apiResponse(200, "유저 상세 조회", {})
+  @apiResponse(404, "유저 상세 조회 실패", {})
   getDetail(@Param("id") id: number) {
     return this.userService.getDetail(id);
   }
