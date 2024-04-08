@@ -1,12 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
+import { Get, Post, Body, Patch, Param, Query } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { apiBody, apiOperation, apiResponse, controller } from "../utiltys/apiDecorators";
 import { LoginUserDto } from "./dto/login-user.dto";
-import { ApiBody, ApiParam, ApiQuery } from "@nestjs/swagger";
+import { ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "./dto/getAll-user.dto";
-import * as bcrypt from "bcrypt";
 
 @controller("user", "api/v1/user")
 export class UserGetAllController {
@@ -37,6 +36,11 @@ export class UserGetDetailController {
   @apiOperation("유저 상세 조회", "유저 상세를 조회.")
   @apiResponse(200, "유저 상세 조회", {})
   @apiResponse(404, "유저 상세 조회 실패", {})
+  @apiResponse(500, "서버 에러", {})
+  @apiResponse(400, "잘못된 요청", {})
+  @apiResponse(401, "권한 없음", {})
+  @apiResponse(403, "금지됨", {})
+  @apiResponse(405, "허용되지 않음", {})
   getDetail(@Param("id") id: number) {
     return this.userService.getDetail(id);
   }
