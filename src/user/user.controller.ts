@@ -51,6 +51,15 @@ export class UserPostLoginController {
   constructor(private readonly userService: UserService) {}
 
   @Post("login")
+  @apiBody("유저 정보", LoginUserDto)
+  @apiOperation("유저 로그인", "유저 로그인을 합니다.")
+  @apiResponse(200, "로그인 성공", {})
+  @apiResponse(400, "로그인 실패", {})
+  @apiResponse(500, "서버 에러", {})
+  @apiResponse(400, "잘못된 요청", {})
+  @apiResponse(401, "권한 없음", {})
+  @apiResponse(403, "금지됨", {})
+  @apiResponse(405, "허용되지 않음", {})
   postLogin(@Body() body: LoginUserDto) {
     return this.userService.postLogin(body);
   }
