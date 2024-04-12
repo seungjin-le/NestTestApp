@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   async postLogin(body: LoginAuthDto) {
-    const user = await this.usersService.getDetail(body.username);
+    const user = await this.usersService.getDetail(body.email);
     return `This action returns  auth`;
   }
 

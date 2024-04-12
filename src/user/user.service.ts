@@ -30,8 +30,8 @@ export class UserService {
     }
   }
 
-  getDetail(id: number) {
-    return `This action returns a #${id} user`;
+  getDetail(email: string) {
+    return `This action returns a  user`;
   }
 
   patch(body: UpdateUserDto) {
