@@ -23,7 +23,7 @@ export class UserService {
         .skip(limit * (page - 1))
         .limit(limit)
         .exec();
-      if (users.length === 0) throw new Error("유저 목록이 없습니다.");
+      if (users.length === 0) return new Error("유저 목록이 없습니다.");
       return users;
     } catch {
       throw new Error("유저 조회 실패");
@@ -40,33 +40,6 @@ export class UserService {
 
   patch(body: UpdateUserDto) {
     return `This action updates a user`;
-  }
-
-  async postLogin(body: LoginUserDto) {
-    try {
-      const { email, password } = body;
-      const user = await this.userModel.findOne({ email }).exec();
-
-      const checkPassword = await bcrypt.compare(password, user.password);
-
-      if (!checkPassword)
-        return {
-          status: 400,
-          message: "비밀번호가 일치하지 않습니다.",
-        };
-      const token = {
-        accessToken: this.jwtService.signAsync({ email: user.email, sub: user.id }).then((res) => res),
-        refreshToken: this.jwtService.signAsync({ email: user.email, sub: user.id }).then((res) => res),
-      };
-      console.log(token);
-      return {
-        status: 200,
-        message: "로그인 성공",
-        data: token,
-      };
-    } catch (error) {
-      throw new Error("로그인 실패");
-    }
   }
 
   async postJoin(body: CreateUserDto) {
