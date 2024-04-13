@@ -5,27 +5,15 @@ import {
   UserGetDetailController,
   UserPostJoinController,
   UserPatchController,
-  UserPostLoginController,
 } from "./user.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import { UserEntity } from "./entities/user.entity";
 import UserSchema from "./user.schema";
-import { JwtModule } from "@nestjs/jwt";
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema.schema }]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-    }),
-  ],
-  controllers: [
-    UserGetAllController,
-    UserGetDetailController,
-    UserPostJoinController,
-    UserPatchController,
-    UserPostLoginController,
-  ],
+  imports: [MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema.schema }])],
+  controllers: [UserGetAllController, UserGetDetailController, UserPostJoinController, UserPatchController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

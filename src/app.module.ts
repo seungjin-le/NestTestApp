@@ -1,24 +1,28 @@
 import { Module } from "@nestjs/common";
 import { MoviesModule } from "./movies/movies.module";
 import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
-import { ConfigModule } from "@nestjs/config";
 import { Connection } from "mongoose";
+import { ConfigModule } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
     MoviesModule,
+    AuthModule,
     UserModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({}),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: "60s" },
+    }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
     }),
-
-    AuthModule,
-    UserModule,
   ],
   controllers: [],
   providers: [],

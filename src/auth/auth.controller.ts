@@ -4,9 +4,10 @@ import { CreateAuthDto } from "./dto/create-auth.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { controller } from "../utiltys/apiDecorators";
 import { LoginAuthDto } from "./dto/login-auth.dto";
+import { ApiBody } from "@nestjs/swagger";
 
-@controller("auth", "Auth")
-export class AuthController {
+@controller("Auth", "api/v1/auth")
+export class AuthGetAllController {
   constructor(private readonly authService: AuthService) {}
 
   @Get()
@@ -15,17 +16,18 @@ export class AuthController {
   }
 }
 
-@controller("auth", "Auth")
+@controller("Auth", "api/v1/auth")
 export class AuthPostLoginController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("login")
+  @ApiBody({ type: LoginAuthDto })
   postLogin(@Body() body: LoginAuthDto) {
     return this.authService.postLogin(body);
   }
 }
 
-@controller("auth", "Auth")
+@controller("Auth", "api/v1/auth")
 export class AuthPostJoinController {
   constructor(private readonly authService: AuthService) {}
 

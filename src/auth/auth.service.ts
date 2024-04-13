@@ -4,7 +4,7 @@ import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { LoginAuthDto } from "./dto/login-auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
-import { UserDocument } from "../user/user.schema";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -23,11 +23,21 @@ export class AuthService {
 
   async postLogin(body: LoginAuthDto) {
     try {
-      const user: Error | Promise<UserDocument> = this.usersService.getDetail(body.email);
-      if (user.password === body.password) {
-      }
+      const user = await this.usersService.getDetail(body.email);
+
+      if (!user) new Error("해당하는 유저가 없습니다.");
+      const checkPassword = await bcrypt.compare(body.password, user.password);
+      if (!checkPassword) return new Error("비밀번호가 일치하지 않습니다.");
       const payload = { email: user.email, sub: user.id };
-      return `This action returns  auth`;
+
+      return {
+        status: 200,
+        message: "로그인 성공",
+        data: {
+          accessToken: await this.jwtService.signAsync(payload),
+          refreshToken: await this.jwtService.signAsync(payload),
+        },
+      };
     } catch {
       throw new Error("로그인 실패");
     }
