@@ -30,8 +30,14 @@ export class UserService {
     }
   }
 
-  getDetail(email: string) {
-    return `This action returns a  user`;
+  getDetail(email: string): Error | Promise<UserDocument> {
+    try {
+      const user = this.userModel.findOne({ email }).exec();
+      if (!user) return new Error("유저가 존재하지 않습니다.");
+      return user;
+    } catch (error) {
+      throw new Error("유저 조회 실패");
+    }
   }
 
   patch(body: UpdateUserDto) {

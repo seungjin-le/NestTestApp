@@ -4,6 +4,7 @@ import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { LoginAuthDto } from "./dto/login-auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
+import { UserDocument } from "../user/user.schema";
 
 @Injectable()
 export class AuthService {
@@ -21,8 +22,15 @@ export class AuthService {
   }
 
   async postLogin(body: LoginAuthDto) {
-    const user = await this.usersService.getDetail(body.email);
-    return `This action returns  auth`;
+    try {
+      const user: Error | Promise<UserDocument> = this.usersService.getDetail(body.email);
+      if (user.password === body.password) {
+      }
+      const payload = { email: user.email, sub: user.id };
+      return `This action returns  auth`;
+    } catch {
+      throw new Error("로그인 실패");
+    }
   }
 
   update(id: number, updateAuthDto: UpdateAuthDto) {
