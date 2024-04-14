@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsObject, IsString } from "class-validator";
 
-class TokenAuthDtoData {
+export class TokenAuthDtoData {
   @ApiProperty({ type: String, description: "액세스 토큰" })
   @IsString()
   accessToken: string;

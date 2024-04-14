@@ -7,17 +7,19 @@ const options: SchemaOptions = {
 
 export interface AuthDocument extends Document {
   email: string;
-  password: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const Auth = new Schema<AuthDocument>(
   {
-    id: { type: Number, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true },
+    accessToken: { type: String, required: true },
+    refreshToken: { type: String, required: true },
   },
   options
 );
 
-const AuthSchema = mongoose.model<AuthDocument>("Auth", Auth);
+const AuthSchema = mongoose.model<AuthDocument>("auth", Auth);
+
 export default AuthSchema;
