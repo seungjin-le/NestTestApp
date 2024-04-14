@@ -37,30 +37,45 @@ export class AuthService {
         },
       });
     } catch (error) {
-      return res.status(400).send({ message: "토큰 갱신 실패" });
+      return res.status(400).send({
+        status: 400,
+        message: "토큰 갱신 실패",
+      });
     }
   }
 
   // 로그인
-  async postLogin(body: LoginAuthDto) {
+  async postLogin(req: LoginAuthDto, res: Response) {
     try {
-      const user = await this.usersService.getDetail(body.email);
-
-      if (!user) new Error("해당하는 유저가 없습니다.");
-      const checkPassword = await bcrypt.compare(body.password, user.password);
-      if (!checkPassword) return new Error("비밀번호가 일치하지 않습니다.");
+      const user = await this.usersService.getDetail(req.email);
+      //new Error("해당하는 유저가 없습니다.");
+      if (!user)
+        return res.status(400).send({
+          status: 400,
+          message: "일치하는 유저가 없습니다.",
+        });
+      const checkPassword = await bcrypt.compare(req.password, user.password);
+      if (!checkPassword)
+        return res.status(400).send({
+          status: 400,
+          message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+        });
+      //return new Error("비밀번호가 일치하지 않습니다.");
       const payload = { email: user.email, sub: user.id };
 
-      return {
+      return res.status(200).send({
         status: 200,
         message: "로그인 성공",
         data: {
           accessToken: this.createAccessToken(payload),
           refreshToken: this.createRefreshToken(payload),
         },
-      };
+      });
     } catch {
-      throw new Error("로그인 실패");
+      return res.status(400).send({
+        status: 400,
+        message: "로그인 실패",
+      });
     }
   }
 }
