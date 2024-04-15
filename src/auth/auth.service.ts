@@ -5,16 +5,15 @@ import { UserService } from "../user/user.service";
 import * as bcrypt from "bcrypt";
 import { RefreshAuthDto } from "./dto/refresh-auth.dto";
 import { Response } from "express";
-import * as constants from "node:constants";
 import { Model } from "mongoose";
-import { UserDocument } from "../user/user.schema";
+import { AuthDocument } from "./auth.schema";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    private userModel: Model<UserDocument>
+    private authModel: Model<AuthDocument>
   ) {}
 
   // Refresh 토큰 생성
@@ -25,6 +24,10 @@ export class AuthService {
   // Access 토큰 생성
   createAccessToken(payload: { email: string; sub: number }) {
     return this.jwtService.sign(payload, { expiresIn: "20s" });
+  }
+
+  async saveToken(payload: { email: string; sub: number }) {
+    return await this.authModel.create(payload);
   }
 
   // 토큰 갱신
