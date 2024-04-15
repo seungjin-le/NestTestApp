@@ -5,12 +5,16 @@ import { UserService } from "../user/user.service";
 import * as bcrypt from "bcrypt";
 import { RefreshAuthDto } from "./dto/refresh-auth.dto";
 import { Response } from "express";
+import * as constants from "node:constants";
+import { Model } from "mongoose";
+import { UserDocument } from "../user/user.schema";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private userModel: Model<UserDocument>
   ) {}
 
   // Refresh 토큰 생성
