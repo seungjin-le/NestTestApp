@@ -26,7 +26,7 @@ export class AuthService {
     return this.jwtService.sign(payload, { expiresIn: "20s" });
   }
 
-  async saveToken(payload: { email: string; sub: number }) {
+  async saveToken(payload: { email: string; refreshToken: string }) {
     return await this.authModel.create(payload);
   }
 
@@ -55,7 +55,6 @@ export class AuthService {
   async postLogin(req: LoginAuthDto, res: Response) {
     try {
       const user = await this.usersService.getDetail(req.email);
-      //new Error("해당하는 유저가 없습니다.");
       if (!user)
         return res.status(400).send({
           status: 400,
@@ -67,7 +66,8 @@ export class AuthService {
           status: 400,
           message: "이메일 또는 비밀번호가 일치하지 않습니다.",
         });
-      //return new Error("비밀번호가 일치하지 않습니다.");
+
+      await this.saveToken({ email: user.email, sub: user.id });
       const payload = { email: user.email, sub: user.id };
 
       return res.status(200).send({
