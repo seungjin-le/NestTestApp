@@ -30,7 +30,7 @@ export class AuthService {
     return await this.authModel.create(payload);
   }
 
-  async tokenCheck() {
+  async tokenCheck(email: string) {
     await this.authModel.findOne({ email }).exec();
   }
 
@@ -38,7 +38,13 @@ export class AuthService {
   async postRefresh(req: RefreshAuthDto, res: Response) {
     try {
       const user = this.jwtService.verify(req.refreshToken);
-      this.tokenCheck(user.email);
+      const check = await this.tokenCheck(user.email);
+      if (!user || !check) {
+        return res.status(400).send({
+          status: 400,
+          message: "토큰이 유효하지 않습니다.",
+        });
+      }
       const payload = { email: user.email, sub: user.sub };
       return res.status(200).send({
         status: 200,
