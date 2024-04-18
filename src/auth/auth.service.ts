@@ -29,11 +29,16 @@ export class AuthService {
   async saveToken(payload: { email: string; refreshToken: string }) {
     return await this.authModel.create(payload);
   }
-const tokenCheck =async() => await this.authModel.findOne( { email } ).exec();
+
+  async tokenCheck() {
+    await this.authModel.findOne({ email }).exec();
+  }
+
   // 토큰 갱신
   async postRefresh(req: RefreshAuthDto, res: Response) {
     try {
       const user = this.jwtService.verify(req.refreshToken);
+      this.tokenCheck(user.email);
       const payload = { email: user.email, sub: user.sub };
       return res.status(200).send({
         status: 200,
