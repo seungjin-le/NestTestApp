@@ -30,6 +30,7 @@ export class AuthService {
     return await this.authModel.create(payload);
   }
 
+  // 토큰 확인
   async tokenCheck(email: string) {
     await this.authModel.findOne({ email }).exec();
   }
