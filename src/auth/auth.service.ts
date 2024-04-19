@@ -31,15 +31,17 @@ export class AuthService {
   }
 
   // 토큰 확인
-  async tokenCheck(email: string) {
-    await this.authModel.findOne({ email }).exec();
+  async tokenCheck(email: string, token: string) {
+    const userToken = await this.authModel.findOne({ email }).exec();
+
+    return userToken.accessToken === token;
   }
 
   // 토큰 갱신
   async postRefresh(req: RefreshAuthDto, res: Response) {
     try {
       const user = this.jwtService.verify(req.refreshToken);
-      const check = await this.tokenCheck(user.email);
+      const check = await this.tokenCheck(user.email, req.refreshToken);
       if (!user || !check) {
         return res.status(400).send({
           status: 400,
