@@ -26,28 +26,15 @@ export class AuthService {
     return this.jwtService.sign(payload, { expiresIn: "20s" });
   }
 
-  async saveToken(payload: { email: string; refreshToken: string }) {
-    return await this.authModel.create(payload);
-  }
-
-  // 토큰 확인
-  async tokenCheck(email: string, token: string) {
-    const userToken = await this.authModel.findOne({ email }).exec();
-
-    return userToken.accessToken === token;
+  async saveToken(email: string, refreshToken: string) {
+    return await this.authModel.create({ email, refreshToken });
   }
 
   // 토큰 갱신
   async postRefresh(req: RefreshAuthDto, res: Response) {
     try {
       const user = this.jwtService.verify(req.refreshToken);
-      const check = await this.tokenCheck(user.email, req.refreshToken);
-      if (!user || !check) {
-        return res.status(400).send({
-          status: 400,
-          message: "토큰이 유효하지 않습니다.",
-        });
-      }
+
       const payload = { email: user.email, sub: user.sub };
       return res.status(200).send({
         status: 200,
@@ -80,17 +67,18 @@ export class AuthService {
           status: 400,
           message: "이메일 또는 비밀번호가 일치하지 않습니다.",
         });
-
-      await this.saveToken({ email: user.email, sub: user.id });
       const payload = { email: user.email, sub: user.id };
+      const token = {
+        accessToken: this.createAccessToken(payload),
+        refreshToken: this.createRefreshToken(payload),
+      };
+
+      await this.saveToken(user.email, token.refreshToken);
 
       return res.status(200).send({
         status: 200,
         message: "로그인 성공",
-        data: {
-          accessToken: this.createAccessToken(payload),
-          refreshToken: this.createRefreshToken(payload),
-        },
+        data: token,
       });
     } catch {
       return res.status(400).send({
