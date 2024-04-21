@@ -3,7 +3,6 @@ import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { apiBody, apiOperation, apiResponse, controller } from "../utiltys/apiDecorators";
-import { LoginUserDto } from "./dto/login-user.dto";
 import { ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "./dto/getAll-user.dto";
 
@@ -52,6 +51,19 @@ export class UserPostJoinController {
 
   @Post("join")
   @apiBody("유저 정보", CreateUserDto)
+  @apiOperation("회원가입", "회원가입")
+  @apiResponse(200, "회원가입 성공", {
+    status: 200,
+    message: "회원가입 성공",
+    data: {
+      accessToken: "string",
+      refreshToken: "string",
+    },
+  })
+  @apiResponse(400, "회원가입 실패", {})
+  @apiResponse(401, "권한 없음", {})
+  @apiResponse(403, "금지됨", {})
+  @apiResponse(405, "허용되지 않음", {})
   postJoin(@Body() body: CreateUserDto) {
     return this.userService.postJoin(body);
   }
@@ -62,6 +74,17 @@ export class UserPatchController {
   constructor(private readonly userService: UserService) {}
 
   @Patch("update")
+  @apiBody("유저 정보", UpdateUserDto)
+  @apiOperation("회원정보 수정", "회원정보 수정")
+  @apiResponse(200, "회원정보 수정 성공", {
+    status: 200,
+    message: "회원정보 수정 성공",
+    data: {},
+  })
+  @apiResponse(400, "회원정보 수정 실패", {})
+  @apiResponse(401, "권한 없음", {})
+  @apiResponse(403, "금지됨", {})
+  @apiResponse(405, "허용되지 않음", {})
   postJoin(@Body() body: UpdateUserDto) {
     return this.userService.patch(body);
   }
