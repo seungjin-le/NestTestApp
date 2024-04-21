@@ -26,8 +26,21 @@ export class AuthService {
     return this.jwtService.sign(payload, { expiresIn: "20s" });
   }
 
+  // 토큰 저장
   async saveToken(email: string, refreshToken: string) {
     return await this.authModel.create({ email, refreshToken });
+  }
+
+  // 토큰 확인
+  async checkedToken(refreshToken: string) {
+    try {
+      const token = await this.authModel.findOne({ refreshToken });
+      if (!token) return false;
+      const payload = this.jwtService.verify(refreshToken);
+      return !!payload;
+    } catch {
+      return false;
+    }
   }
 
   // 토큰 갱신
