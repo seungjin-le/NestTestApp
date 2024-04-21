@@ -1,4 +1,4 @@
-import { Get, Post, Body, Patch, Param, Query } from "@nestjs/common";
+import { Get, Post, Body, Patch, Param, Query, Res } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -40,8 +40,8 @@ export class UserGetDetailController {
   @apiResponse(401, "권한 없음", {})
   @apiResponse(403, "금지됨", {})
   @apiResponse(405, "허용되지 않음", {})
-  getDetail(@Param("email") email: string) {
-    return this.userService.getDetail(email);
+  getDetail(@Param("email") email: string, @Res() res: Response) {
+    return this.userService.getDetail(email, res);
   }
 }
 

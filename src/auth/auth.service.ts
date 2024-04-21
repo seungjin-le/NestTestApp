@@ -68,7 +68,7 @@ export class AuthService {
   // 로그인
   async postLogin(req: LoginAuthDto, res: Response) {
     try {
-      const user = await this.usersService.getDetail(req.email);
+      const user = await this.usersService.getDetail(req.email, res);
       if (!user)
         return res.status(400).send({
           status: 400,

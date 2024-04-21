@@ -6,14 +6,11 @@ import { UserEntity } from "./entities/user.entity";
 import { Model } from "mongoose";
 import { UserDocument } from "./user.schema";
 import * as bcrypt from "bcrypt";
-import { JwtService } from "@nestjs/jwt";
+import { Response } from "express";
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>,
-    private readonly jwtService: JwtService
-  ) {}
+  constructor(@InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>) {}
 
   async getAll({ page, limit }: { page: number; limit: number }) {
     try {
@@ -29,11 +26,13 @@ export class UserService {
     }
   }
 
-  getDetail(email: string): Promise<UserDocument> {
+  async getDetail(email: string, res?: Response): Promise<UserDocument> {
     try {
-      return this.userModel.findOne({ email }).exec();
+      const user = await this.userModel.findOne({ email }).exec();
+      if (!user) res.status(404).send({ status: 404, message: "유저 조회 실패" });
+      return user;
     } catch (error) {
-      throw new Error("유저 조회 실패");
+      res.status(500).send({ status: 500, message: "서버 에러" });
     }
   }
 
