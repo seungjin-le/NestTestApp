@@ -66,7 +66,7 @@ export class AuthService {
   }
 
   // 로그인
-  async postLogin(req: LoginAuthDto, res: Response) {
+  async postLogin(req: LoginAuthDto, res: Response): Promise<any> {
     try {
       const user = await this.usersService.getDetail(req.email, res);
       if (!user)
