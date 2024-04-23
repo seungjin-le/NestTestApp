@@ -5,6 +5,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { apiBody, apiOperation, apiResponse, controller } from "../utiltys/apiDecorators";
 import { ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "./dto/getAll-user.dto";
+import { Response } from "express";
 
 @controller("user", "api/v1/user")
 export class UserGetAllController {
@@ -21,8 +22,8 @@ export class UserGetAllController {
   @apiResponse(401, "권한 없음", {})
   @apiResponse(403, "금지됨", {})
   @apiResponse(405, "허용되지 않음", {})
-  getAll(@Query("page") page: number, @Query("size") limit: number) {
-    return this.userService.getAll({ page, limit });
+  getAll(@Query("page") page: number, @Query("size") limit: number, @Res() res: Response) {
+    return this.userService.getAll({ page, limit }, res);
   }
 }
 

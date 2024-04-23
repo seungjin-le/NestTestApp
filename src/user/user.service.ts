@@ -12,17 +12,17 @@ import { Response } from "express";
 export class UserService {
   constructor(@InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>) {}
 
-  async getAll({ page, limit }: { page: number; limit: number }) {
+  async getAll(page: number, limit: number, res: Response) {
     try {
       const users: [] | UserEntity[] | any = await this.userModel
         .find()
         .skip(limit * (page - 1))
         .limit(limit)
         .exec();
-      if (users.length === 0) return new Error("유저 목록이 없습니다.");
+      if (users.length === 0) return res.status(404).send({ status: 404, message: "유저 목록이 없습니다." });
       return users;
     } catch {
-      throw new Error("유저 조회 실패");
+      res.status(500).send({ status: 500, message: "서버 에러" });
     }
   }
 
