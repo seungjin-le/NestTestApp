@@ -61,6 +61,7 @@ export class AuthService {
       return res.status(400).send({
         status: 400,
         message: "토큰 갱신 실패",
+        data: {},
       });
     }
   }
