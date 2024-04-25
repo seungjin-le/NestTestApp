@@ -15,7 +15,11 @@ export class UserGetAllController {
   @ApiQuery({ name: "page", type: Number, description: "페이지 번호" })
   @ApiQuery({ name: "size", type: Number, description: "페이지 사이즈" })
   @apiOperation("유저 조회", "유저 전체를 조회.")
-  @apiResponse(200, "유저 전체 조회", GetAllUserDto)
+  @apiResponse(200, "유저 전체 조회", {
+    status: 200,
+    message: "유저 전체 조회 성공",
+    data: GetAllUserDto,
+  })
   @apiResponse(404, "유저 전체 조회 실패", {})
   @apiResponse(500, "서버 에러", {})
   @apiResponse(400, "잘못된 요청", {})
@@ -23,7 +27,7 @@ export class UserGetAllController {
   @apiResponse(403, "금지됨", {})
   @apiResponse(405, "허용되지 않음", {})
   getAll(@Query("page") page: number, @Query("size") limit: number, @Res() res: Response) {
-    return this.userService.getAll({ page, limit }, res);
+    return this.userService.getAll(page, limit, res);
   }
 }
 
