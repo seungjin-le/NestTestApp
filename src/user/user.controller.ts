@@ -7,7 +7,7 @@ import { ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "./dto/getAll-user.dto";
 import { Response } from "express";
 
-@controller("user", "api/v1/user")
+@controller("User", "api/v1/user")
 export class UserGetAllController {
   constructor(private readonly userService: UserService) {}
 
@@ -31,7 +31,7 @@ export class UserGetAllController {
   }
 }
 
-@controller("user", "api/v1/user")
+@controller("User", "api/v1/user")
 export class UserGetDetailController {
   constructor(private readonly userService: UserService) {}
 
@@ -50,7 +50,7 @@ export class UserGetDetailController {
   }
 }
 
-@controller("user", "api/v1/user")
+@controller("User", "api/v1/user")
 export class UserPostJoinController {
   constructor(private readonly userService: UserService) {}
 
@@ -74,7 +74,7 @@ export class UserPostJoinController {
   }
 }
 
-@controller("user", "api/v1/user")
+@controller("User", "api/v1/user")
 export class UserPatchController {
   constructor(private readonly userService: UserService) {}
 
