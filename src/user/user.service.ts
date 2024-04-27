@@ -12,6 +12,7 @@ import { Response } from "express";
 export class UserService {
   constructor(@InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>) {}
 
+  // 유저 전체 조회
   async getAll(page: number, limit: number, res: Response) {
     try {
       const users: [] | UserEntity[] | any = await this.userModel
@@ -26,6 +27,7 @@ export class UserService {
     }
   }
 
+  // 유저 상세 조회
   async getDetail(email: string, res?: Response): Promise<UserDocument> {
     try {
       const user = await this.userModel.findOne({ email }).exec();
@@ -40,6 +42,7 @@ export class UserService {
     return `This action updates a user`;
   }
 
+  // 회원가입
   async postJoin(body: CreateUserDto) {
     try {
       const user = await this.userModel.findOne({ email: body.email });
