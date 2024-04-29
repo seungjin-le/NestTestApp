@@ -38,6 +38,7 @@ export class UserService {
     }
   }
 
+  // 유저 정보 수정
   patch(body: UpdateUserDto) {
     return `This action updates a user`;
   }
