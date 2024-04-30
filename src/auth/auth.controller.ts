@@ -7,6 +7,7 @@ import { ApiBody } from "@nestjs/swagger";
 import { RefreshAuthDto } from "./dto/refresh-auth.dto";
 import { Response } from "express";
 
+// 로그인 컨트롤러
 @controller("Auth", "api/v1/auth")
 export class AuthPostLoginController {
   constructor(private readonly authService: AuthService) {}
@@ -24,6 +25,7 @@ export class AuthPostLoginController {
   }
 }
 
+// 토큰 갱신 컨트롤러
 @controller("Auth", "api/v1/auth")
 export class AuthPostRefreshController {
   constructor(private readonly authService: AuthService) {}
