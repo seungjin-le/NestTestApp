@@ -6,6 +6,7 @@ import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from "./user/user.module";
         uri: process.env.MONGODB_URL,
       }),
     }),
+    FileModule,
   ],
   controllers: [],
   providers: [],
