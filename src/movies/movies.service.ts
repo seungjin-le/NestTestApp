@@ -11,15 +11,16 @@ export class MoviesService {
   constructor(@InjectModel(Movie.name) private readonly movieModel: Model<MovieDocument>) {}
 
   // 전체 조회 API
-  async getAll({ page, size }): Promise<Movie[] | unknown> {
+  async getAll({ page, size, res }): Promise<Movie[] | unknown> {
     try {
+      console.log(page, size);
       return await this.movieModel
         .find()
         .skip(size * (page - 1))
         .limit(size)
         .exec();
     } catch (e) {
-      throw new NotFoundException("영화 목록이 없습니다.");
+      throw res.status(404).send("해당 정보가 없습니다.");
     }
   }
 

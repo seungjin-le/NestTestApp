@@ -7,13 +7,14 @@ import { RefreshAuthDto } from "./dto/refresh-auth.dto";
 import { Response } from "express";
 import { Model } from "mongoose";
 import { AuthDocument } from "./auth.schema";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    private authModel: Model<AuthDocument>
+    @InjectModel("Auth") private authModel: Model<AuthDocument>
   ) {}
 
   // Refresh 토큰 생성

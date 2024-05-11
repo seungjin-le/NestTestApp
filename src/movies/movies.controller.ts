@@ -2,10 +2,10 @@ import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
-
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
 import { apiOperation, apiParam, apiQuery, apiBody, apiResponse, controller } from "../utiltys/apiDecorators";
+import { Response } from "express";
 
 @controller("영화", "api/v1/movies")
 export class MoviesController {
@@ -22,10 +22,11 @@ export class MoviesController {
   @apiResponse(405, "허용되지 않음")
   @apiQuery("page", false, Number, "페이지 번호")
   @apiQuery("size", false, Number, "페이지 사이즈")
-  getAll(@Query("page") page: number, @Query("size") size: number) {
+  getAll(@Query("page") page: number, @Query("size") size: number, res: Response) {
     return this.moviesService.getAll({
       page,
       size,
+      res,
     });
   }
 }
