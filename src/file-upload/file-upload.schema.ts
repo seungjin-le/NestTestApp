@@ -2,7 +2,7 @@ import mongoose, { SchemaOptions, Schema, Document } from "mongoose";
 
 const options: SchemaOptions = {
   timestamps: true,
-  collection: "file-upload",
+  collection: "file",
 };
 
 export interface FileUploadDocument extends Document {
