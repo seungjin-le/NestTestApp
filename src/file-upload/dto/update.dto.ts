@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsNotEmpty } from "class-validator";
 
-// UpdateFileDto는 이미지 파일을 업데이트할 때 사용할 DTO입니다.
 export class UpdateFileDto {
   @IsString()
   @IsNotEmpty()
