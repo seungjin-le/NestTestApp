@@ -4,6 +4,7 @@ import { FileService } from "./file-upload.service";
 @Controller("api/v1/file-upload")
 export class FileUploadController {
   constructor(private readonly FileService: FileService) {}
+
   @Post("upload")
   async uploadFile(@UploadedFile() file) {
     return this.FileService.uploadFile(file);

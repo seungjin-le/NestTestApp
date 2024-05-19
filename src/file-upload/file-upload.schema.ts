@@ -5,13 +5,13 @@ const options: SchemaOptions = {
   collection: "file",
 };
 
-export interface FileUploadDocument extends Document {
+export interface FileDocument extends Document {
   name: string;
   path: string;
   size: number;
 }
 
-const Member = new Schema<FileUploadDocument>(
+const Member = new Schema<FileDocument>(
   {
     name: { type: String, required: true },
     path: { type: String, required: true },
@@ -20,5 +20,5 @@ const Member = new Schema<FileUploadDocument>(
   options
 );
 
-const FileUploadSchema = mongoose.model<FileUploadDocument>("FileUpload", Member);
-export default FileUploadSchema;
+const FileSchema = mongoose.model<FileDocument>("File", Member);
+export default FileSchema;
