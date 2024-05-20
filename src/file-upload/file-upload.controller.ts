@@ -1,6 +1,7 @@
 import { Body, Controller, Post, UploadedFile } from "@nestjs/common";
 import { FileService } from "./file-upload.service";
 
+// 파일 업로드
 @Controller("api/v1/file-upload")
 export class FileUploadController {
   constructor(private readonly FileService: FileService) {}
@@ -11,6 +12,7 @@ export class FileUploadController {
   }
 }
 
+// 파일 삭제
 @Controller("api/v1/file-delete")
 export class FileDeleteController {
   constructor(private readonly FileService: FileService) {}
@@ -20,6 +22,7 @@ export class FileDeleteController {
   }
 }
 
+// 파일 수정
 @Controller("api/v1/file-update")
 export class FileUpdateController {
   constructor(private readonly FileService: FileService) {}
