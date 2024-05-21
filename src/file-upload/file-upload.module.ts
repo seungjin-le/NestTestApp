@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { FileUploadController } from "./file-upload.controller";
+import { FileDeleteController, FileUpdateController, FileUploadController } from "./file-upload.controller";
 import { FileService } from "./file-upload.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import FileUploadSchema from "./file-upload.schema";
@@ -13,7 +13,7 @@ import FileUploadSchema from "./file-upload.schema";
       },
     ]),
   ],
-  controllers: [FileUploadController],
+  controllers: [FileUploadController, FileDeleteController, FileUpdateController],
   providers: [FileService],
 })
 export class FileUploadModule {}
