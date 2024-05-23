@@ -15,7 +15,9 @@ export class FileService {
       size: file.size,
     };
   }
-
+  async downloadFile(key: string) {
+    return this.fileModel.findOne({ key });
+  }
   async deleteFile(key: string) {
     return {
       key,

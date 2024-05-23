@@ -12,6 +12,15 @@ export class FileUploadController {
   }
 }
 
+@Controller("api/v1/file-download")
+export class FileDownloadController {
+  constructor(private readonly FileService: FileService) {}
+  @Post("download")
+  async downloadFile(@Body() { key }) {
+    return this.FileService.downloadFile(key);
+  }
+}
+
 // 파일 삭제
 @Controller("api/v1/file-delete")
 export class FileDeleteController {
