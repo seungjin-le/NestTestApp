@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { File } from "./entities/file.entity";
 import { Model } from "mongoose";
-import { FileDocument } from "./file-upload.schema";
+import { FileDocument } from "./file.schema";
 
 @Injectable()
 export class FileService {
@@ -15,9 +15,11 @@ export class FileService {
       size: file.size,
     };
   }
+
   async downloadFile(key: string) {
     return this.fileModel.findOne({ key });
   }
+
   async deleteFile(key: string) {
     return {
       key,
