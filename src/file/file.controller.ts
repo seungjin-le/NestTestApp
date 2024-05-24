@@ -1,24 +1,27 @@
-import { Body, Controller, Post, UploadedFile } from "@nestjs/common";
+import { Body, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileService } from "./file.service";
 import { apiOperation, apiResponse, controller } from "src/utiltys/apiDecorators";
-import { ApiBody } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes } from "@nestjs/swagger";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { UpLoadFileDto } from "./dto/upload.dto";
 
 // 파일 업로드
-@controller("File", "api/v1/file-upload")
+@controller("File", "api/v1/file")
 export class FileController {
   constructor(private readonly FileService: FileService) {}
 
   @Post("upload")
-  @apiOperation("로그인", "로그인")
+  @ApiConsumes("multipart/form-data")
+  @apiOperation("파일 업로드", "파일 업로드")
   @ApiBody({ type: UpLoadFileDto })
-  @apiResponse(200, " 성공", {})
-  async uploadFile(@UploadedFile() file) {
+  @UseInterceptors(FileInterceptor("file"))
+  @apiResponse(200, " 성공")
+  async uploadFile(@UploadedFile() file: any) {
     return this.FileService.uploadFile(file);
   }
 }
 
-@controller("File", "api/v1/file-download")
+@controller("File", "api/v1/file")
 export class FileDownloadController {
   constructor(private readonly FileService: FileService) {}
 
@@ -29,7 +32,7 @@ export class FileDownloadController {
 }
 
 // 파일 삭제
-@controller("File", "api/v1/file-delete")
+@controller("File", "api/v1/file")
 export class FileDeleteController {
   constructor(private readonly FileService: FileService) {}
 
@@ -40,7 +43,7 @@ export class FileDeleteController {
 }
 
 // 파일 수정
-@controller("File", "api/v1/file-update")
+@controller("File", "api/v1/file")
 export class FileUpdateController {
   constructor(private readonly FileService: FileService) {}
 

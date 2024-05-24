@@ -1,19 +1,19 @@
 import { Module } from "@nestjs/common";
-import { FileDeleteController, FileUpdateController, FileController } from "./file.controller";
+import { FileDeleteController, FileUpdateController, FileController, FileDownloadController } from "./file.controller";
 import { FileService } from "./file.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import FileUploadSchema from "./file.schema";
+import FileSchema from "./file.schema";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {
         name: "File",
-        schema: FileUploadSchema.schema,
+        schema: FileSchema.schema,
       },
     ]),
   ],
-  controllers: [FileController, FileDeleteController, FileUpdateController],
+  controllers: [FileController, FileDeleteController, FileUpdateController, FileDownloadController],
   providers: [FileService],
 })
 export class FileModule {}

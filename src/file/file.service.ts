@@ -8,11 +8,10 @@ import { FileDocument } from "./file.schema";
 export class FileService {
   constructor(@InjectModel(File.name) private readonly fileModel: Model<FileDocument>) {}
 
-  async uploadFile(file: any) {
+  async uploadFile(file: File) {
+    console.log(file);
     return {
-      name: file.originalname,
-      path: file.location,
-      size: file.size,
+      data: "file data",
     };
   }
 
