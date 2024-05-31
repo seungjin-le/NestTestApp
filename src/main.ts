@@ -18,7 +18,7 @@ async function bootstrap() {
   // Swagger 설정
   const options = new DocumentBuilder()
     .setTitle("NestJS 연습용 API Docs")
-    .setDescription("NestJS 연습용")
+    .setDescription("NestJS 연습")
     .setVersion("1.0.0")
     .build();
 
