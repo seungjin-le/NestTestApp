@@ -1,5 +1,11 @@
 import { Module } from "@nestjs/common";
-import { FileDeleteController, FileUpdateController, FileController, FileDownloadController } from "./file.controller";
+import {
+  FileDeleteController,
+  FileUpdateController,
+  FileController,
+  FileDownloadController,
+  GetFileController,
+} from "./file.controller";
 import { FileService } from "./file.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import FileSchema from "./file.schema";
@@ -13,7 +19,7 @@ import FileSchema from "./file.schema";
       },
     ]),
   ],
-  controllers: [FileController, FileDeleteController, FileUpdateController, FileDownloadController],
+  controllers: [GetFileController, FileController, FileDeleteController, FileUpdateController, FileDownloadController],
   providers: [FileService],
 })
 export class FileModule {}

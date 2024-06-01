@@ -1,9 +1,23 @@
-import { Body, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Get, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileService } from "./file.service";
 import { apiOperation, apiResponse, controller } from "src/utiltys/apiDecorators";
-import { ApiBody, ApiConsumes } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiParam } from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UpLoadFileDto } from "./dto/upload.dto";
+import { GetFileDto } from "./dto/get.dto";
+
+@controller("File", "api/v1/file")
+export class GetFileController {
+  constructor(private readonly FileService: FileService) {}
+
+  @Get(":key")
+  @apiOperation("파일 가져오기", "파일 가져오기")
+  @ApiParam({ name: "key", type: String, description: "S3 파일 키", example: "example-key-123" })
+  @apiResponse(200, "성공")
+  async getFiles(@Param("key") key: String) {
+    return this.FileService.getFiles(key);
+  }
+}
 
 // 파일 업로드
 @controller("File", "api/v1/file")
@@ -12,11 +26,15 @@ export class FileController {
 
   @Post("upload")
   @ApiConsumes("multipart/form-data")
-  @apiOperation("파일 업로드", "파일 업로드")
   @ApiBody({ type: UpLoadFileDto })
   @UseInterceptors(FileInterceptor("file"))
+  @apiOperation("파일 업로드", "파일 업로드")
   @apiResponse(200, " 성공")
-  async uploadFile(@UploadedFile() file: any) {
+  @apiResponse(400, "실패")
+  @apiResponse(401, "권한 없음")
+  @apiResponse(403, "금지됨")
+  @apiResponse(405, "허용되지 않음")
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.FileService.uploadFile(file);
   }
 }
@@ -49,6 +67,6 @@ export class FileUpdateController {
 
   @Post("update")
   async updateFile(@Body() { key, newFileName }) {
-    return this.FileService.uodateFile(key, newFileName);
+    return this.FileService.updateFile(key, newFileName);
   }
 }
