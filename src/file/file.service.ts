@@ -21,7 +21,6 @@ export class FileService {
   }
 
   async getFiles(key: any) {
-    console.log(key);
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: key,
