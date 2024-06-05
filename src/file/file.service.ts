@@ -20,21 +20,20 @@ export class FileService {
     this.s3 = new AWS.S3();
   }
 
+  // 파일 업로드
   async getFiles(key: any) {
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: key,
     };
 
-    // return new Promise((resolve, reject) => {
-    //   this.s3.getObject(params, (err, data) => {
-    //     console.log(data);
-    //     if (err) reject(err);
-    //     resolve(data);
-    //   });
-    // });
-    //이력서 사진 용량 압축.jpeg
-    // return this.fileModel.find();
+    return new Promise((resolve, reject) => {
+      this.s3.getObject(params, (err, data) => {
+        console.log(data);
+        if (err) reject(err);
+        resolve(data);
+      });
+    });
   }
 
   async uploadFile(file: Express.Multer.File) {
