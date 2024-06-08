@@ -10,21 +10,21 @@ import { FileModule } from "./file/file.module";
 
 @Module({
   imports: [
-    MoviesModule,
-    AuthModule,
-    UserModule,
-    ConfigModule.forRoot({}),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: "30m", algorithm: "HS256" },
-    }),
-    MongooseModule.forRootAsync({
-      useFactory: () => ({
-        uri: process.env.MONGODB_URL,
-      }),
-    }),
-    FileModule,
+    // MoviesModule,
+    // AuthModule,
+    // UserModule,
+    // ConfigModule.forRoot({}),
+    // JwtModule.register({
+    //   global: true,
+    //   secret: process.env.JWT_SECRET,
+    //   signOptions: { expiresIn: "30m", algorithm: "HS256" },
+    // }),
+    // MongooseModule.forRootAsync({
+    //   useFactory: () => ({
+    //     uri: process.env.MONGODB_URL,
+    //   }),
+    // }),
+    // FileModule,
   ],
   controllers: [],
   providers: [],
