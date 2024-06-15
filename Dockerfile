@@ -1,4 +1,8 @@
 FROM node:18
+
+# MongoDB 클라이언트 설치
+RUN npm install mongodb
+
 RUN mkdir -p /var/app
 WORKDIR /var/app
 COPY . .
