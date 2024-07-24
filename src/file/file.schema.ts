@@ -11,7 +11,7 @@ export interface FileDocument extends Document {
   size: number;
 }
 
-const Member = new Schema<FileDocument>(
+const File = new Schema<FileDocument>(
   {
     name: { type: String, required: true },
     key: { type: String, required: true },
@@ -20,5 +20,4 @@ const Member = new Schema<FileDocument>(
   options
 );
 
-const FileSchema = mongoose.model<FileDocument>("File", Member);
-export default FileSchema;
+export default mongoose.model<FileDocument>("File", File);

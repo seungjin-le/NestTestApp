@@ -19,6 +19,7 @@ import { UserModule } from "./user/user.module";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "30m", algorithm: "HS256" },
     }),
+    // MongoDB 모듈
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
