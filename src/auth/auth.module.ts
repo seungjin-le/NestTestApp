@@ -7,6 +7,7 @@ import AuthSchema from "./auth.schema";
 // import { AuthGuard } from "./auth.guard";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtModule } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
@@ -17,9 +18,15 @@ import { JwtModule } from "@nestjs/jwt";
         schema: AuthSchema.schema,
       },
     ]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: "60s" },
+    JwtModule.registerAsync({
+      // JWT 모듈
+      global: true,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get('JWT_SECRET'),
+
+        signOptions: { expiresIn: "1h", algorithm: "HS256" },
+      }),
     }),
   ],
   controllers: [AuthPostRefreshController, AuthPostLoginController],
