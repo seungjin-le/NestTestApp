@@ -10,6 +10,7 @@ import { UserModule } from "./user/user.module";
 console.log(process.env.JWT_SECRET);
 @Module({
   imports: [
+    // 환경 변수 모듈
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ".env",
