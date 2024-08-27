@@ -11,12 +11,11 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const { originalUrl } = request;
-    if ( originalUrl !== "/api/vi/auth/login" || originalUrl !== "/api/vi/auth/refresh" ) {
-      const token = request.headers.authorization?.split( " " )[ 1 ];
-
-      return this.authService.checkedToken( token );
+    if ( originalUrl === "/api/v1/auth/login" || originalUrl === "/api/vi/auth/refresh" ) {
+      return true;
     }
 
-    return true;
+    const token = request.headers.authorization?.split( " " )[ 1 ];
+    return this.authService.checkedToken( token );
   }
 }

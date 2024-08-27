@@ -33,12 +33,14 @@ export class MoviesService {
     }
   }
 
-  async delete(id: number): Promise<{ data: Promise<Movie | unknown>; message: string }> {
+  // 삭제 API
+  async delete(id: number): Promise<{ data: Promise<Movie | unknown>; message: string; status: number }> {
     try {
       const movie = this.getDetail(id);
       await this.movieModel.deleteOne({ id }).exec();
       return {
         message: "영화 삭제 성공",
+        status: 200,
         data: movie,
       };
     } catch (e) {
