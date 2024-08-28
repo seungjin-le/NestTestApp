@@ -6,6 +6,7 @@ import { MovieDocument } from "./movies.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 
+// 영화 서비스
 @Injectable()
 export class MoviesService {
   constructor(@InjectModel(Movie.name) private readonly movieModel: Model<MovieDocument>) {}
