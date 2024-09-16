@@ -5,8 +5,7 @@ export class GetAllUserDto {
   id: number;
   @ApiProperty({ type: String })
   email: string;
-  @ApiProperty({ type: String })
-  nickname: string;
+
   @ApiProperty({ type: Date })
   created_at: Date;
   @ApiProperty({ type: Date })

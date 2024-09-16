@@ -3,21 +3,14 @@ import { InjectModel } from "@nestjs/mongoose";
 import { File } from "./entities/file.entity";
 import { Model } from "mongoose";
 import { FileDocument } from "./file.schema";
-import * as AWS from "aws-sdk";
+
 
 @Injectable()
 export class FileService {
   private readonly s3;
 
   constructor(@InjectModel(File.name) private readonly fileModel: Model<FileDocument>) {
-    AWS.config.update({
-      region: process.env.AWS_REGION,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      },
-    });
-    this.s3 = new AWS.S3();
+   
   }
 
   // 파일 업로드

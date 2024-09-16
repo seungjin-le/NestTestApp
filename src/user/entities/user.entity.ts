@@ -15,10 +15,6 @@ export class UserEntity {
   @Column()
   password: string;
 
-  // 닉네임
-  @ApiProperty({ type: String })
-  @Column()
-  nickname: string;
 
   // 생성일자
   @ApiProperty({ type: String })

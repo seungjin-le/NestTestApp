@@ -45,6 +45,7 @@ export class UserService {
 
   // 회원가입
   async postJoin(body: CreateUserDto) {
+    console.log(body);
     try {
       const user = await this.userModel.findOne({ email: body.email });
 
@@ -60,7 +61,7 @@ export class UserService {
         id: id + 1,
         email: body.email,
         password: hashedPassword,
-        nickName: body.nickName,
+  
       });
       return {
         status: 200,
