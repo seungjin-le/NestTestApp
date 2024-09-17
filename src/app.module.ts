@@ -7,7 +7,6 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
-console.log(process.env.JWT_SECRET);
 @Module({
   imports: [
     // 환경 변수 모듈
@@ -19,7 +18,7 @@ console.log(process.env.JWT_SECRET);
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
     ConfigModule.forRoot({}), // 환경 변수 모듈
-   
+
     // MongoDB 모듈
     MongooseModule.forRootAsync({
       useFactory: () => ({
@@ -32,7 +31,6 @@ console.log(process.env.JWT_SECRET);
 })
 export class AppModule {
   constructor(@InjectConnection() private readonly mongooseConnection: Connection) {
-
     // MongoDB 연결 상태 확인
     const mongooseInstance = this.mongooseConnection;
     if (mongooseInstance.readyState === 1) {

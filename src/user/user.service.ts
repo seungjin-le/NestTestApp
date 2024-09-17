@@ -34,10 +34,12 @@ export class UserService {
   }
 
   // 유저 상세 조회
-  async getDetail(email: string, res: Response): Promise<any> {
+  async getDetail(email: string, res?: Response): Promise<any> {
     try {
       const user = await this.userModel.findOne({ email }).exec();
       if (!user) res.status(404).send({ status: 404, message: "유저 조회 실패" });
+
+      if (!res) return user;
 
       return res.status(200).send({
         status: 200,

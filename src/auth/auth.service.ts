@@ -76,8 +76,7 @@ export class AuthService {
   // 로그인
   async postLogin(req: LoginAuthDto, res: Response): Promise<any> {
     try {
-      console.log(req);
-      const user = await this.usersService.getDetail(req.email, res);
+      const user = await this.usersService.getDetail(req.email);
 
       if (!user) {
         return res.status(400).send({
@@ -87,7 +86,7 @@ export class AuthService {
       }
 
       const checkPassword = await bcrypt.compare(req.password, user.password);
-
+      console.log(checkPassword);
       if (!checkPassword) {
         return res.status(400).send({
           status: 400,

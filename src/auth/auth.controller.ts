@@ -21,6 +21,7 @@ export class AuthPostLoginController {
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
   postLogin(@Body() req: LoginAuthDto, @Res() res: Response) {
+    console.log(req);
     return this.authService.postLogin(req, res);
   }
 }
