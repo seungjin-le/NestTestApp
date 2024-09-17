@@ -9,27 +9,27 @@ import { APP_GUARD } from "@nestjs/core";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 
-@Module( {
+@Module({
   imports: [
     UserModule,
-    MongooseModule.forFeature( [
+    MongooseModule.forFeature([
       {
         name: "Auth",
         schema: AuthSchema.schema,
       },
-    ] ),
-    JwtModule.registerAsync( {
+    ]),
+    JwtModule.registerAsync({
       // JWT 모듈
       global: true,
-      inject: [ ConfigService ],
-      useFactory: ( config: ConfigService ) => ( {
-        secret: config.get( "JWT_SECRET" ),
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get("JWT_SECRET"),
 
         signOptions: { expiresIn: "1h", algorithm: "HS256" },
-      } ),
-    } ),
+      }),
+    }),
   ],
-  controllers: [ AuthPostRefreshController, AuthPostLoginController ],
+  controllers: [AuthPostRefreshController, AuthPostLoginController],
 
   providers: [
     AuthService,
@@ -38,6 +38,5 @@ import { ConfigService } from "@nestjs/config";
       useClass: AuthGuard,
     },
   ],
-} )
-export class AuthModule {
-}
+})
+export class AuthModule {}

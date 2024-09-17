@@ -5,6 +5,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
   // 이메일
   @ApiProperty({ type: String })
   @Column()
@@ -14,7 +15,6 @@ export class UserEntity {
   @ApiProperty({ type: String })
   @Column()
   password: string;
-
 
   // 생성일자
   @ApiProperty({ type: String })
