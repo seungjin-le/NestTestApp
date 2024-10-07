@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
+import { BooksController } from './books/books.controller';
+import { BooksModule } from './books/books.module';
 
 @Module({
   imports: [
@@ -24,9 +26,9 @@ import { UserModule } from "./user/user.module";
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
-    }),
+    }), BooksModule,
   ],
-  controllers: [],
+  controllers: [BooksController],
   providers: [],
 })
 export class AppModule {
