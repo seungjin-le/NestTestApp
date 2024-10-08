@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { BooksController } from './books/books.controller';
 import { BooksModule } from './books/books.module';
+import { BookModule } from './book/book.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { BooksModule } from './books/books.module';
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
-    }), BooksModule,
+    }), BooksModule, BookModule,
   ],
   controllers: [BooksController],
   providers: [],
