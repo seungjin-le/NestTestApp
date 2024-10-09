@@ -4,7 +4,7 @@ import { CreateMovieDto } from "./dto/create-movie.dto";
 import { UpdateMovieDto } from "./dto/update-movie.dto";
 import { Movie } from "./entities/Movie.entity";
 import { DeleteMovieDto } from "./dto/delete-movie.dto";
-import { apiOperation, apiParam, apiQuery, apiBody, apiResponse, controller } from "../utiltys/apiDecorators";
+import { apiOperation, apiParam, apiQuery, apiBody, apiResponse, controller } from "@/utils/apiDecorators";
 import { Response } from "express";
 
 @controller("영화", "api/v1/movies")

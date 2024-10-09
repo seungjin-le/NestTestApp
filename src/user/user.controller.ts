@@ -2,7 +2,7 @@ import { Get, Post, Body, Patch, Param, Query, Res } from "@nestjs/common";
 import { UserService } from "@/user/user.service";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
-import { apiBody, apiOperation, apiResponse, controller } from "@/utiltys/apiDecorators";
+import { apiBody, apiOperation, apiResponse, controller } from "@/utils/apiDecorators";
 import { ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "@/user/dto/getAll-user.dto";
 import { Response } from "express";

@@ -6,17 +6,17 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
-import { BooksController } from './books/books.controller';
-import { BooksModule } from './books/books.module';
-import { BookModule } from './book/book.module';
+import configuration from "@/config/configuration";
 
 @Module({
   imports: [
     // 환경 변수 모듈
     ConfigModule.forRoot({
+      load: [configuration],
       isGlobal: true,
       envFilePath: ".env",
     }),
+
     MoviesModule, // 영화 모듈
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
@@ -27,9 +27,9 @@ import { BookModule } from './book/book.module';
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
-    }), BooksModule, BookModule,
+    }),
   ],
-  controllers: [BooksController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {
