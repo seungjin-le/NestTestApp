@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
+import { ProductModule } from './product/product.module';
 import configuration from "@/config/configuration";
 
 @Module({
@@ -27,7 +28,7 @@ import configuration from "@/config/configuration";
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
-    }),
+    }), ProductModule,
   ],
   controllers: [],
   providers: [],
