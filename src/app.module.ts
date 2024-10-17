@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
-import { ProductModule } from './product/product.module';
+import { ProductModule } from "./product/product.module";
 import configuration from "@/config/configuration";
 
 @Module({
@@ -22,13 +22,19 @@ import configuration from "@/config/configuration";
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
     ConfigModule.forRoot({}), // 환경 변수 모듈
-
+    JwtModule.register({
+      // JWT 모듈
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: "30m", algorithm: "HS256" },
+    }),
     // MongoDB 모듈
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
       }),
-    }), ProductModule,
+    }),
+    ProductModule,
   ],
   controllers: [],
   providers: [],
