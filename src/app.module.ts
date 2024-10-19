@@ -31,7 +31,7 @@ import configuration from "@/config/configuration";
     // MongoDB 모듈
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.MONGODB_URL,
+        uri: "mongodb://mongodb:27017/mydatabase", // process.env.MONGODB_URL ||
       }),
     }),
     ProductModule,

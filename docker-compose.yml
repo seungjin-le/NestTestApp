@@ -1,5 +1,25 @@
+version: "3.8"
+
 services:
   app:
-    build: .
+    container_name: nestjs_app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - mongodb://mongodb:27017/mydatabase
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

@@ -1,24 +1,62 @@
-# Node.js 버전 명시 (18-alpine 사용하여 이미지 크기 줄이기)
-FROM node:18-alpine
+FROM node:18-alpine AS base
+# Node.js 18 버전의 경량 Alpine 이미지를 기반으로 설정.
 
-# 작업 디렉토리 생성 및 설정
-WORKDIR /app
+# 개발 환경을 위한 의존성 설치 (Nest.js)
+FROM base AS deps
+# 작업 디렉토리를 /usr/src/app으로 설정.
+WORKDIR /usr/src/app
 
-# 의존성 파일 복사 및 설치 (캐싱 활용)
-COPY package*.json ./
-RUN npm ci --only=production  # production 환경에 필요한 의존성만 설치
+# package.json과 yarn.lock 파일을 복사하여 의존성 설치에 사용.
+COPY --chown=node:node package.json yarn.lock ./
 
-# 소스 코드 복사
-COPY . .
+# yarn을 사용하여 의존성을 설치. --frozen-lockfile 옵션은 lockfile을 변경하지 않도록.
+RUN yarn --frozen-lockfile;
 
-# 빌드 결과물 디렉토리 생성
-RUN mkdir -p dist
+# node 사용자를 설정하여 권한을 제한.
+USER node
 
-# 빌드 (production 환경에 맞게 수정)
-RUN npm run build
 
-# 3000 포트 노출
-EXPOSE 3000
+# 프로덕션을 위한 의존성 설치 및 빌드
+FROM base AS build
 
-# 실행 명령어 (production 환경에 맞게 수정)
+# 작업 디렉토리를 /usr/src/app으로 설정.
+WORKDIR /usr/src/app
+
+# 이전 단계에서 설치한 node_modules를 복사.
+COPY --chown=node:node --from=deps /usr/src/app/node_modules ./node_modules
+
+# 소스 코드를 복사.
+COPY --chown=node:node . .
+
+# 소스 코드를 빌드.
+RUN yarn build
+
+
+
+# 환경 변수를 production으로 설정.
+ENV NODE_ENV production
+
+# 프로덕션 환경에 필요한 의존성만 설치.
+RUN yarn --frozen-lockfile --production;
+
+# 빌드 캐시를 제거하여 이미지 크기를 줄임.
+RUN rm -rf ./.next/cache
+
+# node 사용자를 설정하여 권한을 제한.
+USER node
+
+
+# 프로덕션 이미지
+FROM base AS production
+
+# 작업 디렉토리를 /usr/src/app으로 설정.
+WORKDIR /usr/src/app
+
+# 빌드 단계에서 생성된 node_modules를 복사.
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+
+# 빌드된 dist 디렉토리를 복사.
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+
+# 애플리케이션을 실행.
 CMD [ "node", "dist/main.js" ]
