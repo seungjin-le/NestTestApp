@@ -7,6 +7,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { ProductModule } from "./product/product.module";
+import { PostUserModule } from "./post_user/post_user.module";
 import configuration from "@/config/configuration";
 
 @Module({
@@ -17,10 +18,6 @@ import configuration from "@/config/configuration";
       isGlobal: true,
       envFilePath: ".env",
     }),
-
-    MoviesModule, // 영화 모듈
-    AuthModule, // 인증 모듈
-    UserModule, // 사용자 모듈
     ConfigModule.forRoot({}), // 환경 변수 모듈
     JwtModule.register({
       // JWT 모듈
@@ -34,7 +31,11 @@ import configuration from "@/config/configuration";
         uri: "mongodb://mongodb:27017/mydatabase", // process.env.MONGODB_URL ||
       }),
     }),
+    MoviesModule, // 영화 모듈
+    AuthModule, // 인증 모듈
+    UserModule, // 사용자 모듈
     ProductModule,
+    PostUserModule,
   ],
   controllers: [],
   providers: [],
