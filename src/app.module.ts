@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { ProductModule } from "./product/product.module";
 import { PostUserModule } from "./post_user/post_user.module";
+import { DbModule } from './db/db.module';
 import configuration from "@/config/configuration";
 
 @Module({
@@ -36,6 +37,7 @@ import configuration from "@/config/configuration";
     UserModule, // 사용자 모듈
     ProductModule,
     PostUserModule,
+    DbModule,
   ],
   controllers: [],
   providers: [],
