@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePostUserDto } from './dto/create-post_user.dto';
-import { UpdatePostUserDto } from './dto/update-post_user.dto';
+import { Injectable } from "@nestjs/common";
+import { CreatePostUserDto } from "./dto/create-post_user.dto";
+import { UpdatePostUserDto } from "./dto/update-post_user.dto";
 
 @Injectable()
 export class PostUserService {
   create(createPostUserDto: CreatePostUserDto) {
-    return 'This action adds a new postUser';
+    return "This action adds a new postUser";
   }
 
-  findAll() {
+  findPostUserAll(page: number, limit: number, res: Response) {
     return `This action returns all postUser`;
   }
 
