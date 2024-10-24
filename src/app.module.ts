@@ -8,7 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { ProductModule } from "./product/product.module";
 import { PostUserModule } from "./post_user/post_user.module";
-import { DbModule } from './db/db.module';
+import { DbModule } from "./db/db.module";
 import configuration from "@/config/configuration";
 
 @Module({
@@ -35,9 +35,9 @@ import configuration from "@/config/configuration";
     MoviesModule, // 영화 모듈
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
-    ProductModule,
-    PostUserModule,
-    DbModule,
+    ProductModule, // 상품 모듈
+    PostUserModule, // 게시글 모듈
+    DbModule, // 데이터베이스 모듈
   ],
   controllers: [],
   providers: [],
