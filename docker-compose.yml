@@ -7,19 +7,19 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:3000" # 호스트의 3000 포트를 컨테이너의 3000 포트에 매핑
     environment:
-      - mongodb://mongodb:27017/mydatabase
+      - mongodb://mongodb:27017/mydatabase # MongoDB 연결 문자열 환경 변수
     depends_on:
-      - mongodb
+      - mongodb # mongodb 서비스가 먼저 시작되어야 함
 
   mongodb:
     image: mongo:latest
     container_name: mongodb
     ports:
-      - "27017:27017"
+      - "27017:27017" # 호스트의 27017 포트를 컨테이너의 27017 포트에 매핑
     volumes:
-      - mongo_data:/data/db
+      - mongo_data:/data/db # 데이터 지속성을 위한 볼륨 매핑
 
 volumes:
-  mongo_data:
+  mongo_data: # MongoDB 데이터 저장을 위한 볼륨
