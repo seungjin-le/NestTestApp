@@ -9,6 +9,8 @@ import { UserModule } from "./user/user.module";
 import { ProductModule } from "./product/product.module";
 import { PostUserModule } from "./post_user/post_user.module";
 import { DbModule } from "./db/db.module";
+import { MassageGateway } from "./massage/massage.gateway";
+import { MessageModule } from "./massage/massage.module";
 import configuration from "@/config/configuration";
 
 @Module({
@@ -37,10 +39,11 @@ import configuration from "@/config/configuration";
     UserModule, // 사용자 모듈
     ProductModule, // 상품 모듈
     PostUserModule, // 게시글 모듈
-    DbModule, // 데이터베이스 모듈
+    DbModule,
+    MessageModule, // 데이터베이스 모듈
   ],
   controllers: [],
-  providers: [],
+  providers: [MassageGateway],
 })
 export class AppModule {
   constructor(@InjectConnection() private readonly mongooseConnection: Connection) {
