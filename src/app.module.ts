@@ -9,8 +9,8 @@ import { UserModule } from "./user/user.module";
 import { ProductModule } from "./product/product.module";
 import { PostUserModule } from "./post_user/post_user.module";
 import { DbModule } from "./db/db.module";
-import { MassageGateway } from "./massage/massage.gateway";
-import { MessageModule } from "./massage/massage.module";
+import { MassageGateway } from "./message/message.gateway";
+import { MessageModule } from "./message/massage.module";
 import configuration from "@/config/configuration";
 
 @Module({
