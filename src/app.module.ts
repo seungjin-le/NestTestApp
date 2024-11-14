@@ -10,7 +10,7 @@ import { ProductModule } from "./product/product.module";
 import { PostUserModule } from "./post_user/post_user.module";
 import { DbModule } from "./db/db.module";
 import { MassageGateway } from "./message/message.gateway";
-import { MessageModule } from "./message/massage.module";
+import { MessageModule } from "./message/message.module";
 import configuration from "@/config/configuration";
 
 @Module({
