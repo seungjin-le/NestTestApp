@@ -1,6 +1,6 @@
 import { controller } from "@/utils/apiDecorators";
 import { Body, Post, Sse } from "@nestjs/common";
-import { interval, map, Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { EventService } from "./event.service";
 
 @controller("이벤트", "api/v1/event")

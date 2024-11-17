@@ -3,7 +3,6 @@ import { PostUserService } from "./post_user.service";
 import { CreatePostUserDto } from "./dto/create-post_user.dto";
 import { UpdatePostUserDto } from "./dto/update-post_user.dto";
 import { apiOperation, apiResponse, controller } from "@/utils/apiDecorators";
-import { UserService } from "@/user/user.service";
 import { ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "@/user/dto/getAll-user.dto";
 
@@ -11,7 +10,7 @@ import { GetAllUserDto } from "@/user/dto/getAll-user.dto";
 export class PostUserController {
   constructor(private readonly postUserService: PostUserService) {}
 
-  @Post() 
+  @Post()
   create(@Body() createPostUserDto: CreatePostUserDto) {
     return this.postUserService.create(createPostUserDto);
   }
