@@ -10,8 +10,9 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { originalUrl } = request;
     if (originalUrl !== "/api/vi/auth/refresh") return true;
-
+     
     const token = request.headers.authorization?.split(" ")[1];
     return this.authService.checkedToken(token);
   }
 }
+ 

@@ -47,7 +47,6 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.21"],\
           ["@types/jest", "npm:29.5.13"],\
           ["@types/multer", "npm:1.4.12"],\
-          ["@types/node", "npm:20.16.13"],\
           ["@types/supertest", "npm:2.0.16"],\
           ["@types/uuid", "npm:10.0.0"],\
           ["bcrypt", "npm:5.1.1"],\
@@ -2855,14 +2854,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/node", [\
-      ["npm:20.16.13", {\
-        "packageLocation": "../../../.yarn/berry/cache/@types-node-npm-20.16.13-ce4213be9e-10c0.zip/node_modules/@types/node/",\
-        "packageDependencies": [\
-          ["@types/node", "npm:20.16.13"],\
-          ["undici-types", "npm:6.19.8"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:22.7.7", {\
         "packageLocation": "../../../.yarn/berry/cache/@types-node-npm-22.7.7-4485163f4e-10c0.zip/node_modules/@types/node/",\
         "packageDependencies": [\
@@ -8395,7 +8386,6 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.21"],\
           ["@types/jest", "npm:29.5.13"],\
           ["@types/multer", "npm:1.4.12"],\
-          ["@types/node", "npm:20.16.13"],\
           ["@types/supertest", "npm:2.0.16"],\
           ["@types/uuid", "npm:10.0.0"],\
           ["bcrypt", "npm:5.1.1"],\
@@ -10856,7 +10846,7 @@ const RAW_RUNTIME_STATE =
           ["@tsconfig/node12", "npm:1.0.11"],\
           ["@tsconfig/node14", "npm:1.0.3"],\
           ["@tsconfig/node16", "npm:1.0.4"],\
-          ["@types/node", "npm:20.16.13"],\
+          ["@types/node", null],\
           ["@types/swc__core", null],\
           ["@types/swc__wasm", null],\
           ["@types/typescript", null],\

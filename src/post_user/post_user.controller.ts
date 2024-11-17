@@ -11,7 +11,7 @@ import { GetAllUserDto } from "@/user/dto/getAll-user.dto";
 export class PostUserController {
   constructor(private readonly postUserService: PostUserService) {}
 
-  @Post()
+  @Post() 
   create(@Body() createPostUserDto: CreatePostUserDto) {
     return this.postUserService.create(createPostUserDto);
   }

@@ -1917,15 +1917,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.3.1":
-  version: 20.16.13
-  resolution: "@types/node@npm:20.16.13"
-  dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/7f4fd7176db0802c62e11ebbf7a66d0248e2dc8ec9153d9fc8bcb164d9aed581d91c407046c823c522e60d0babfdc24a1618dba7f2c6920ef1a24e1d416c9550
-  languageName: node
-  linkType: hard
-
 "@types/qs@npm:*":
   version: 6.9.16
   resolution: "@types/qs@npm:6.9.16"
@@ -6711,7 +6702,6 @@ __metadata:
     "@types/express": "npm:^4.17.17"
     "@types/jest": "npm:^29.5.2"
     "@types/multer": "npm:^1.4.11"
-    "@types/node": "npm:^20.3.1"
     "@types/supertest": "npm:^2.0.12"
     "@types/uuid": "npm:^10.0.0"
     bcrypt: "npm:^5.1.1"

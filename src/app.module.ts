@@ -11,6 +11,9 @@ import { PostUserModule } from "./post_user/post_user.module";
 import { DbModule } from "./db/db.module";
 import { MassageGateway } from "./message/message.gateway";
 import { MessageModule } from "./message/message.module";
+import { EventService } from "./event/event.service";
+import { EventController } from "./event/event.controller";
+import { EventModule } from "./event/event.module";
 import configuration from "@/config/configuration";
 
 @Module({
@@ -31,19 +34,20 @@ import configuration from "@/config/configuration";
     // MongoDB 모듈
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: "mongodb://mongodb:27017/mydatabase", // process.env.MONGODB_URL ||
+        uri: process.env.MONGODB_URL || "mongodb://mongodb:27017/mydatabase",
       }),
     }),
+    EventModule, // 이벤트 모듈
     MoviesModule, // 영화 모듈
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
     ProductModule, // 상품 모듈
     PostUserModule, // 게시글 모듈
     DbModule,
-    MessageModule, // 데이터베이스 모듈
+    MessageModule,
   ],
-  controllers: [],
-  providers: [MassageGateway],
+  controllers: [EventController],
+  providers: [MassageGateway, EventService],
 })
 export class AppModule {
   constructor(@InjectConnection() private readonly mongooseConnection: Connection) {

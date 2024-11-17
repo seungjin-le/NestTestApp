@@ -25,7 +25,7 @@ export class PostUserEntity {
   @ApiProperty({ type: String })
   @UpdateDateColumn()
   updatedAt: Date;
-
+   
   // 삭제일자
   @ApiProperty({ type: Date })
   @DeleteDateColumn()
