@@ -29,7 +29,7 @@ import configuration from "@/config/configuration";
     // // MongoDB 모듈
     // MongooseModule.forRootAsync({
     //   useFactory: () => ({
-    //     uri: process.env.MONGODB_URL || "mongodb://mongodb:27017/mydatabase",
+    //     uri: process.env.MONGODB_URL,
     //   }),
     // }),
     // EventModule, // 이벤트 모듈
