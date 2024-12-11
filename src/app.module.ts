@@ -9,6 +9,7 @@ import { UserModule } from "./user/user.module";
 import { PostUserModule } from "./post_user/post_user.module";
 // import { DbModule } from "./db/db.module";
 import { EventModule } from "./event/event.module";
+import { SocketModule } from './socket/socket.module';
 import configuration from "@/config/configuration";
 
 @Module({
@@ -36,7 +37,7 @@ import configuration from "@/config/configuration";
     MoviesModule, // 영화 모듈
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
-    PostUserModule, // 게시글 모듈
+    PostUserModule, SocketModule, // 게시글 모듈
     // DbModule,
   ],
   controllers: [],
