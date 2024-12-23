@@ -20,7 +20,6 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts", "src/**/*.js"]
   }
 }
-       
