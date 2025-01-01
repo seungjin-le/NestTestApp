@@ -9,6 +9,11 @@ export class SocketGateway {
 
   constructor(private readonly socketService: SocketService) {}
 
+  /**
+   * 메시지를 수신하는 함수
+   * @param message 메시지
+   * @param client Socket
+   */
   @SubscribeMessage('message')
   handleMessage(@MessageBody() message: string, @ConnectedSocket() client: Socket): void {
     console.log('Received message:', message);
