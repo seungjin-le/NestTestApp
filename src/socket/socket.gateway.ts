@@ -30,7 +30,7 @@ export class SocketGateway {
   @SubscribeMessage('leave')
   handleLeave(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     client.leave(room);
-    console.log(`Client left room: ${room}`);
+  
     this.server.to(room).emit('message', `A client has left the room: ${room}`);
   }
 }
