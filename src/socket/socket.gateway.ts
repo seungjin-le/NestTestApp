@@ -20,6 +20,11 @@ export class SocketGateway {
     this.server.emit('message', message);
   }
 
+  /**
+   * 로그인 후 로그인된 사용자를 토큰로 가지는 room에 접속
+   * @param room 
+   * @param client 
+   */
   @SubscribeMessage('join')
   handleJoin(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     client.join(room);
@@ -27,6 +32,11 @@ export class SocketGateway {
     this.server.to(room).emit('message', `A new client has joined the room: ${room}`);
   }
 
+  /**
+   * 로그인 후 로그인된 사용자를 토큰로 가지는 room에서 제거
+   * @param room 
+   * @param client 
+   */
   @SubscribeMessage('leave')
   handleLeave(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     client.leave(room);
