@@ -10,7 +10,7 @@ export class EventService {
     // 모든 사용자에게 주기적으로 메시지를 보내는 interval 설정
     interval(3000).subscribe(() => {
       for (const id in this.testEvent) {
-        const event = new MessageEvent("message", { data: `Periodic event for ID: ${id}` });
+        const event = new MessageEvent("message", { data: `ID: ${id}에 대한 주기적 이벤트` });
         this.sendTestEvent(id, event);
       }
     });
@@ -24,8 +24,8 @@ export class EventService {
 
   //  사용자에게 메시지를 보내는 함수
   sendTestEvent(id: string, event: MessageEvent) {
-    console.log("sendTestEvent", id, event, this.testEvent);
+    console.log("이벤트 전송", id, event, this.testEvent);
     if (this.testEvent[id]) this.testEvent[id].next(event);
-    else console.log("no id");
+    else console.log("ID가 없습니다");
   }
 }

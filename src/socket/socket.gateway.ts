@@ -16,7 +16,7 @@ export class SocketGateway {
    */
   @SubscribeMessage('message')
   handleMessage(@MessageBody() message: string, @ConnectedSocket() client: Socket): void {
-    console.log('Received message:', message);
+    console.log('수신된 메시지:', message);
     this.server.emit('message', message);
   }
 
@@ -28,8 +28,8 @@ export class SocketGateway {
   @SubscribeMessage('join')
   handleJoin(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     client.join(room);
-    console.log(`Client joined room: ${room}`);
-    this.server.to(room).emit('message', `A new client has joined the room: ${room}`);
+    console.log(`클라이언트가 방에 참여했습니다: ${room}`);
+    this.server.to(room).emit('message', `새로운 클라이언트가 방에 참여했습니다: ${room}`);
   }
 
   /**
@@ -40,7 +40,7 @@ export class SocketGateway {
   @SubscribeMessage('leave')
   handleLeave(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     client.leave(room);
-  
-    this.server.to(room).emit('message', `A client has left the room: ${room}`);
+
+    this.server.to(room).emit('message', `클라이언트가 방을 나갔습니다: ${room}`);
   }
 }
