@@ -12,6 +12,7 @@ import { Server, Socket } from 'socket.io';
 import { Logger, UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
 import { SocketService } from './socket.service';
 import { JoinRoomDto, LeaveRoomDto, SocketMessageDto } from "@/socket/dto/socket.dto";
+import { WsExceptionFilter } from './filters/ws-exception.filter';
 
 @WebSocketGateway({
   cors: {
