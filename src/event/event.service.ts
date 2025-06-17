@@ -22,7 +22,7 @@ export class EventService {
     return this.testEvent[id].asObservable();
   }
 
-  //  사용자에게 메시지를 보내는 함수
+  //  사용자 에게 메시지 를 보내는 함수
   sendTestEvent(id: string, event: MessageEvent) {
     console.log("이벤트 전송", id, event, this.testEvent);
     if (this.testEvent[id]) this.testEvent[id].next(event);
