@@ -37,7 +37,7 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   handleConnection(client: Socket): void {
-    this.logger.log(`클라이언트 연결됨: ${client.id}`);
+    this.logger.log(`클라이언트 연결됨 : ${client.id}`);
     this.socketService.handleConnection(client);
   }
 
