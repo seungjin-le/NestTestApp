@@ -12,6 +12,7 @@ export class EventController {
     return this.eventService.handleConnetcion(id).pipe(map((event: MessageEvent) => event));
   }
 
+
   @Post("send")
   sendTestEvent(@Body("id") id: string, @Body("msg") msg: string) {
     const message = new MessageEvent("message", { data: msg });

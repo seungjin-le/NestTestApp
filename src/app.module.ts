@@ -14,7 +14,7 @@ import configuration from "@/config/configuration";
 
 @Module({
   imports: [
-    // 환경 변수 모듈
+    /** 환경 변수 모듈 */
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
