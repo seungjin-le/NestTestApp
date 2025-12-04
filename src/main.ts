@@ -2,33 +2,44 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 글로벌 파이프 설정
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>("port") ?? 3000;
+  const nodeEnv = process.env.NODE_ENV ?? "development";
+
+  // 공통 글로벌 파이프 설정
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // DTO에 정의되지 않은(데코레이터가 없는) 속성들을 자동으로 제거
-      forbidNonWhitelisted: true, // "true로 설정하면, 허용되지 않은 속성들을 제거하는 대신 validator가 에러를 발생
-      transform: true, // DTO에서 타입 변환
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
     })
   );
 
-  // Swagger 설정
-  const options = new DocumentBuilder()
-    .setTitle("NestJS 연습용 API Docs")
-    .setDescription("NestJS 연습용")
-    .setVersion("1.0.0")
-    .build();
+  // 글로벌 prefix 설정 (예: /api/users)
+  app.setGlobalPrefix("api");
 
-  const document = SwaggerModule.createDocument(app, options, {});
+  // Swagger는 개발/스테이징에서만 활성화
+  if (nodeEnv !== "production") {
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle("NestJS 연습용 API Docs")
+      .setDescription("NestJS 연습용")
+      .setVersion("1.0.0")
+      .build();
 
-  // Swagger UI가 사용할 endpoint 설정
-  SwaggerModule.setup("api-docs", app, document);
-  app.enableCors(); // CORS 설정 추가
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup("api-docs", app, document);
+  }
 
-  await app.listen(3000, "0.0.0.0");
+  // CORS 설정 (기본 허용, 필요 시 origin 제한 가능)
+  app.enableCors();
+
+  await app.listen(port, "0.0.0.0");
 }
 
 bootstrap();

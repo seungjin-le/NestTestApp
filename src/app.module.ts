@@ -48,9 +48,9 @@ export class AppModule {
     // MongoDB 연결 상태 확인
     const mongooseInstance = this.mongooseConnection;
     if (mongooseInstance.readyState === 1) {
-      console.log("MongoDB 연결 성공!");
+      console.log("MongoDB 연결 성공!", process.env.MONGODB_URL);
     } else {
-      console.error("MongoDB 연결 실패:", mongooseInstance.readyState);
+      console.error("MongoDB 연결 실패:", process.env.MONGODB_URL, mongooseInstance.readyState);
     }
   }
 }
