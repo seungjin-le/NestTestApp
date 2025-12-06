@@ -19,7 +19,7 @@ import configuration from "@/config/configuration";
       load: [configuration],
       isGlobal: true,
       envFilePath: ".env",
-    }),
+    }),  
     ConfigModule.forRoot({}), // 환경 변수 모듈
     JwtModule.register({
       // JWT 모듈
