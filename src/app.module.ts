@@ -14,13 +14,27 @@ import configuration from "@/config/configuration";
 
 @Module({
   imports: [
-    /** 환경 변수 모듈 */
+    /** 
+     * @description 환경 변수 모듈
+     * @param load 환경 변수 파일 로드
+     * @param isGlobal 환경 변수 모듈 전역 설정
+     * @param envFilePath 환경 변수 파일 경로
+     * @returns ConfigModule 환경 변수 모듈
+     */
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
       envFilePath: ".env",
     }),  
-    ConfigModule.forRoot({}), // 환경 변수 모듈
+    ConfigModule.forRoot({}),
+
+    /** 
+     * @description JWT 모듈
+     * @param global JWT 모듈 전역 설정
+     * @param secret JWT 모듈 시크릿 키
+     * @param signOptions JWT 모듈 서명 옵션
+     * @returns JwtModule JWT 모듈
+     */
     JwtModule.register({
       // JWT 모듈
       global: true,
