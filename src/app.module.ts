@@ -59,8 +59,10 @@ import configuration from "@/config/configuration";
 })
 export class AppModule {
   constructor(@InjectConnection() private readonly mongooseConnection: Connection) {
-    // MongoDB 연결 상태 확인
+    /** @description MongoDB 연결 상태 확인 */
     const mongooseInstance = this.mongooseConnection;
+
+
     if (mongooseInstance.readyState === 1) {
       console.log("MongoDB 연결 성공!", process.env.MONGODB_URL);
     } else {
