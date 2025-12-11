@@ -21,7 +21,7 @@ async function bootstrap() {
     })
   );
 
-  // 글로벌 prefix 설정 (예: /api/users)
+
   app.setGlobalPrefix("api");
 
   // Swagger는 개발/스테이징에서만 활성화
