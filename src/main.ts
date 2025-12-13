@@ -11,7 +11,7 @@ async function bootstrap() {
   const port = configService.get<number>("port") ?? 3000;
   const nodeEnv = process.env.NODE_ENV ?? "development";
 
-  // 공통 글로벌 파이프 설정
+  /** @description 공통 글로벌 파이프 설정 */
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
