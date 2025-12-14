@@ -24,7 +24,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
 
-  // Swagger는 개발/스테이징에서만 활성화
+  /** @description Swagger는 개발/스테이징에서만 활성화 */
   if (nodeEnv !== "production") {
     const swaggerConfig = new DocumentBuilder()
       .setTitle("NestJS 연습용 API Docs")
