@@ -36,7 +36,7 @@ async function bootstrap() {
     SwaggerModule.setup("api-docs", app, document);
   }
 
-  // CORS 설정 (기본 허용, 필요 시 origin 제한 가능)
+  /** @description CORS 설정 (기본 허용, 필요 시 origin 제한 가능) */
   app.enableCors();
 
   await app.listen(port, "0.0.0.0");
