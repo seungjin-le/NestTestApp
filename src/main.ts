@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
+  /** @description NestFactory로로 AppModule을 생성 */
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
