@@ -23,6 +23,7 @@ async function bootstrap() {
   );
 
 
+  /** @description Global Prefix 설정 */
   app.setGlobalPrefix("api");
 
   /** @description Swagger는 개발/스테이징에서만 활성화 */
