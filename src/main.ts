@@ -34,6 +34,7 @@ async function bootstrap() {
       .setVersion("1.0.0")
       .build();
 
+      /** @description Swagger 문서 생성 */
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup("api-docs", app, document);
   }
