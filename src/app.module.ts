@@ -41,7 +41,12 @@ import configuration from "@/config/configuration";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "30m", algorithm: "HS256" },
     }),
-    // MongoDB 모듈
+
+    /** 
+     * @description MongoDB 모듈
+     * @param uri MongoDB 모듈 연결 주소
+     * @returns MongooseModule MongoDB 모듈
+     */
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGODB_URL,
