@@ -52,12 +52,21 @@ import configuration from "@/config/configuration";
         uri: process.env.MONGODB_URL,
       }),
     }),
-    EventModule, // 이벤트 모듈
+    /** 
+     * @description 이벤트 모듈
+     * @returns EventModule 이벤트 모듈
+     */   
+    EventModule, 
+    /** 
+     * @description 영화 모듈
+     * @returns MoviesModule 영화 모듈
+     */
     MoviesModule, // 영화 모듈
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
-    PostUserModule, SocketModule, // 게시글 모듈
-    // DbModule,
+    PostUserModule, // 게시글 모듈
+    SocketModule, // 소켓 모듈
+    // DbModule, // 데이터베이스 모듈
   ],
   controllers: [],
   providers: [],
