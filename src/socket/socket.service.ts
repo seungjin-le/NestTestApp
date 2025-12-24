@@ -9,6 +9,13 @@ interface ClientInfo {
   rooms: Set<string>;
 }
 
+/**
+ * @description SocketService 소켓 서비스
+ * @param server Server 서버
+ * @param clients Map<string, ClientInfo> 클라이언트 정보
+ * @param rooms Map<string, Set<string>> 방 정보
+ * @param logger Logger 로거
+ */
 @Injectable()
 export class SocketService {
   private server: Server;
