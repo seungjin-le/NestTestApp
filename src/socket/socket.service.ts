@@ -27,6 +27,10 @@ export class SocketService {
     this.server = server;
   }
 
+    /**
+     * @description 클라이언트 연결 처리
+     * @param client Socket 클라이언트
+     */
   handleConnection(client: Socket): void {
     const clientInfo: ClientInfo = {
       id: client.id,
