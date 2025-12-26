@@ -42,6 +42,11 @@ export class SocketService {
     this.logger.log(`총 연결된 클라이언트 수: ${this.clients.size}`);
   }
 
+
+  /**
+   * @description 클라이언트 연결 해제 처리
+   * @param client Socket 클라이언트
+   */
   handleDisconnection(client: Socket): void {
     const clientInfo = this.clients.get(client.id);
     
