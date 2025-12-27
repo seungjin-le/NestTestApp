@@ -61,6 +61,12 @@ export class SocketService {
     this.logger.log(`총 연결된 클라이언트 수: ${this.clients.size}`);
   }
 
+
+  /**
+   * @description 메시지 처리
+   * @param messageDto SocketMessageDto 메시지 DTO
+   * @param client Socket 클라이언트
+   */
   async handleMessage(messageDto: SocketMessageDto, client: Socket): Promise<void> {
     // 메시지 처리 로직 (예: 데이터베이스 저장, 로깅 등)
     this.logger.log(`메시지 처리 - 클라이언트: ${client.id}, 내용: ${messageDto.message}`);
