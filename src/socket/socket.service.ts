@@ -74,6 +74,11 @@ export class SocketService {
     // 여기에 메시지 저장, 필터링 등의 비즈니스 로직을 추가할 수 있습니다.
   }
 
+  /**
+   * @description 클라이언트를 방에 추가
+   * @param clientId string 클라이언트 ID
+   * @param room string 방 이름
+   */
   async addClientToRoom(clientId: string, room: string): Promise<void> {
     const clientInfo = this.clients.get(clientId);
     if (clientInfo) {
