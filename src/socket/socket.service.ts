@@ -93,6 +93,11 @@ export class SocketService {
     this.logger.log(`방 ${room}에 클라이언트 ${clientId} 추가됨`);
   }
 
+  /**
+   * @description 클라이언트를 방에서 제거
+   * @param clientId string 클라이언트 ID
+   * @param room string 방 이름
+   */
   async removeClientFromRoom(clientId: string, room: string): Promise<void> {
     const clientInfo = this.clients.get(clientId);
     if (clientInfo) {
