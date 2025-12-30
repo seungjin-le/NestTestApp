@@ -117,6 +117,11 @@ export class SocketService {
     this.logger.log(`방 ${room}에서 클라이언트 ${clientId} 제거됨`);
   }
 
+  /**
+   * @description 방 사용자 목록 조회
+   * @param room string 방 이름
+   * @returns string[] 방 사용자 목록
+   */
   async getRoomUsers(room: string): Promise<string[]> {
     const roomClients = this.rooms.get(room);
     return roomClients ? Array.from(roomClients) : [];
