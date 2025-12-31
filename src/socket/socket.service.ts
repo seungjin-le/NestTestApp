@@ -108,8 +108,11 @@ export class SocketService {
     if (roomClients) {
       roomClients.delete(clientId);
       
-      // 방이 비어있으면 제거
-      if (roomClients.size === 0) {
+      // 방에 있는 클라이언트 수 조회
+      const clientCount = roomClients.size;
+
+      // 방에 있는 클라이언트 수가 0이면 방 제거
+      if (clientCount === 0) {
         this.rooms.delete(room);
       }
     }
