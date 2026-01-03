@@ -130,6 +130,10 @@ export class SocketService {
     return roomClients ? Array.from(roomClients) : [];
   }
 
+  /**
+   * @description 연결된 클라이언트 수 조회
+   * @returns number 연결된 클라이언트 수
+   */
   getConnectedClientsCount(): number {
     return this.clients.size;
   }
