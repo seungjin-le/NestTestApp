@@ -142,6 +142,11 @@ export class SocketService {
     return this.rooms.size;
   }
 
+  /**
+   * @description 클라이언트가 속한 방 목록 조회
+   * @param clientId string 클라이언트 ID
+   * @returns string[] 클라이언트가 속한 방 목록
+   */
   getClientRooms(clientId: string): string[] {
     const clientInfo = this.clients.get(clientId);
     return clientInfo ? Array.from(clientInfo.rooms) : [];
