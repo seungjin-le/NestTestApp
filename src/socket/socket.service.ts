@@ -138,6 +138,10 @@ export class SocketService {
     return this.clients.size;
   }
 
+  /**
+   * @description 방 개수 조회
+   * @returns number 방 개수
+   */
   getRoomsCount(): number {
     return this.rooms.size;
   }
