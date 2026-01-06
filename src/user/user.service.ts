@@ -13,7 +13,13 @@ import { Response } from "express";
 export class UserService {
   constructor(@InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>) {}
 
-  // 유저 전체 조회
+  /**
+   * @description 유저 전체 조회
+   * @param page number 페이지 번호
+   * @param limit number 페이지 당 유저 수
+   * @param res Response 응답 객체
+   * @returns any 유저 목록
+   */
   async getAll(page: number, limit: number, res: Response): Promise<any> {
     try {
       const users: [] | UserEntity[] | any = await this.userModel
