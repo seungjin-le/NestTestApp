@@ -57,7 +57,12 @@ export class UserService {
     }
   }
 
-  // 유저 정보 수정
+  /**
+   * @description 유저 정보 수정
+   * @param body UpdateUserDto 유저 정보 수정 요청 바디
+   * @param res Response 응답 객체
+   * @returns any 유저 정보 수정 성공 메시지
+   */
   async patch(body: UpdateUserDto, res: Response): Promise<any> {
     return res.status(200).send({
       status: 200,
