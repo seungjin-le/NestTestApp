@@ -8,6 +8,7 @@ async function bootstrap() {
   /** @description NestFactory로로 AppModule을 생성 */
   const app = await NestFactory.create(AppModule);
 
+  /** @description ConfigService로부터 port와 nodeEnv 가져오기 */
   const configService = app.get(ConfigService);
   const port = configService.get<number>("port") ?? 3000;
   const nodeEnv = process.env.NODE_ENV ?? "development";
@@ -22,19 +23,14 @@ async function bootstrap() {
     })
   );
 
-
   /** @description Global Prefix 설정 */
   app.setGlobalPrefix("api");
 
   /** @description Swagger는 개발/스테이징에서만 활성화 */
   if (nodeEnv !== "production") {
-    const swaggerConfig = new DocumentBuilder()
-      .setTitle("NestJS 연습용 API Docs")
-      .setDescription("NestJS 연습용")
-      .setVersion("1.0.0")
-      .build();
+    const swaggerConfig = new DocumentBuilder().setTitle("NestJS 연습용 API Docs").setDescription("NestJS 연습용").setVersion("1.0.0").build();
 
-      /** @description Swagger 문서 생성 */
+    /** @description Swagger 문서 생성 */
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup("api-docs", app, document);
   }
