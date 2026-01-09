@@ -28,6 +28,11 @@ export class UserGetAllController {
   }
 }
 
+/**
+ * @description 유저 상세 조회 컨트롤러
+ * @class UserGetDetailController
+ * @param userService 유저 서비스
+ */
 @controller("User", "api/v1/user")
 export class UserGetDetailController {
   constructor(private readonly userService: UserService) {}
