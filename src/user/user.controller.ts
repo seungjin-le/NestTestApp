@@ -12,6 +12,13 @@ import { GetDetailUserDto } from "@/user/dto/getDetail-user-dto";
 export class UserGetAllController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * @description 유저 전체 조회
+   * @param page 페이지 번호
+   * @param limit 페이지 사이즈
+   * @param res 응답
+   * @returns 유저 전체 조회
+   */
   @Get()
   @ApiQuery({ name: "page", type: Number, description: "페이지 번호" })
   @ApiQuery({ name: "size", type: Number, description: "페이지 사이즈" })
