@@ -59,6 +59,11 @@ export class UserGetDetailController {
   }
 }
 
+/**
+ * @description 회원가입 컨트롤러
+ * @class UserPostJoinController
+ * @param userService 유저 서비스
+ */
 @controller("User", "api/v1/user")
 export class UserPostJoinController {
   constructor(private readonly userService: UserService) {}
