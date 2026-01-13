@@ -81,6 +81,11 @@ export class UserPostJoinController {
   }
 }
 
+/**
+ * @description 회원정보 수정 컨트롤러
+ * @class UserPatchController
+ * @param userService 유저 서비스
+ */
 @controller("User", "api/v1/user")
 export class UserPatchController {
   constructor(private readonly userService: UserService) {}
