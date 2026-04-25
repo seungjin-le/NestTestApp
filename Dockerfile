@@ -1,5 +1,5 @@
-FROM node:18-alpine AS base
-# Node.js 18 버전의 경량 Alpine 이미지를 기반으로 설정.
+FROM node:22-alpine AS base
+# NestJS 11 실행을 위한 Node.js 22 Alpine 이미지를 기반으로 설정.
 
 # 개발 환경을 위한 의존성 설치 (Nest.js)
 FROM base AS deps
@@ -38,9 +38,6 @@ ENV NODE_ENV production
 
 # 프로덕션 환경에 필요한 의존성만 설치.
 RUN yarn --frozen-lockfile --production;
-
-# 빌드 캐시를 제거하여 이미지 크기를 줄임.
-RUN rm -rf ./.next/cache
 
 # node 사용자를 설정하여 권한을 제한.
 USER node

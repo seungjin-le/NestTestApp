@@ -9,7 +9,10 @@ services:
     ports:
       - "3000:3000" # 호스트의 3000 포트를 컨테이너의 3000 포트에 매핑
     environment:
-      - mongodb://mongodb:27017/mydatabase # MongoDB 연결 문자열 환경 변수
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URL: mongodb://mongodb:27017/mydatabase
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
     depends_on:
       - mongodb # mongodb 서비스가 먼저 시작되어야 함
 
