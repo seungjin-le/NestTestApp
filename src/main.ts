@@ -10,8 +10,8 @@ async function bootstrap() {
 
   /** @description ConfigService로부터 port와 nodeEnv 가져오기 */
   const configService = app.get(ConfigService);
-  const port = configService.get<number>("port") ?? 3000;
-  const nodeEnv = process.env.NODE_ENV ?? "development";
+  const port = configService.get<number>("port", 3000);
+  const nodeEnv = configService.get<string>("nodeEnv", "development");
 
   /** @description 공통 글로벌 파이프 설정 */
   app.useGlobalPipes(

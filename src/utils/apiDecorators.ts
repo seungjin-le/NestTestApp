@@ -1,4 +1,4 @@
-import { applyDecorators, Controller } from "@nestjs/common";
+import { applyDecorators, Controller, Type } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 /**
@@ -13,11 +13,11 @@ export const controller = (tag: string, path: string): ClassDecorator => {
 /**
  * @param {string} name 쿼리 이름 .
  * @param {boolean} required 쿼리 필수 여부.
- * @param {any} type 쿼리 타입.
+ * @param {unknown} type 쿼리 타입.
  * @param {string} description 쿼리 설명.
  * @returns {MethodDecorator}
  */
-export const apiQuery = (name: string, required: boolean, type: any, description: string): MethodDecorator => {
+export const apiQuery = (name: string, required: boolean, type: Type<unknown>, description: string): MethodDecorator => {
   return ApiQuery({ name, required, type, description });
 };
 
@@ -43,19 +43,19 @@ export const apiOperation = (summary: string, description: string): MethodDecora
 /**
  * @param {number} status HTTP 상태 코드.
  * @param {string} description API 응답 설명.
- * @param {any} type API 응답 타입.
- * @param {any} options API 응답 옵션.
+ * @param {unknown} type API 응답 타입.
+ * @param {object} options API 응답 옵션.
  * @returns {MethodDecorator}
  */
-export const apiResponse = (status: number, description: string, type?: any, options?: Object): MethodDecorator => {
+export const apiResponse = (status: number, description: string, type?: Type<unknown>, options?: object): MethodDecorator => {
   return ApiResponse({ status, description, type, ...options });
 };
 
 /**
  * @param {string} description API Request 설명.
- * @param {any} type API Request 타입.
+ * @param {unknown} type API Request 타입.
  * @returns {MethodDecorator}
  */
-export const apiBody = (description: string, type: any): MethodDecorator => {
+export const apiBody = (description: string, type: Type<unknown>): MethodDecorator => {
   return ApiBody({ description, type });
 };

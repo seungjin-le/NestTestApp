@@ -9,6 +9,16 @@ import { Model } from "mongoose";
 import { AuthDocument } from "./auth.schema";
 import { InjectModel } from "@nestjs/mongoose";
 
+type JwtPayload = {
+  email: string;
+  sub: number;
+};
+
+type TokenPair = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -18,17 +28,17 @@ export class AuthService {
   ) {}
 
   // Refresh 토큰 생성
-  createRefreshToken(payload: { email: string; sub: number }) {
+  createRefreshToken(payload: JwtPayload): string {
     return this.jwtService.sign(payload, { expiresIn: "7d" });
   }
 
   // Access 토큰 생성
-  createAccessToken(payload: { email: string; sub: number }) {
+  createAccessToken(payload: JwtPayload): string {
     return this.jwtService.sign(payload, { expiresIn: "1h" });
   }
 
   // 토큰 저장
-  async saveToken(email: string, token: { accessToken: string; refreshToken: string }) {
+  async saveToken(email: string, token: TokenPair): Promise<void> {
     const checked = await this.authModel.findOne({ email });
     if (checked) {
       await this.authModel.updateOne({ email }, { ...token });
@@ -38,8 +48,7 @@ export class AuthService {
   }
 
   // 토큰 확인
-  async checkedToken(refreshToken: string) {
-    console.log("test", refreshToken);
+  async checkedToken(refreshToken: string): Promise<boolean> {
     try {
       const token = await this.authModel.findOne({ refreshToken });
       if (!token) return false;
@@ -51,9 +60,9 @@ export class AuthService {
   }
 
   // 토큰 갱신
-  async postRefresh(req: RefreshAuthDto, res: Response) {
+  async postRefresh(req: RefreshAuthDto, res: Response): Promise<Response> {
     try {
-      const user = this.jwtService.verify(req.refreshToken);
+      const user = this.jwtService.verify<JwtPayload>(req.refreshToken);
 
       const payload = { email: user.email, sub: user.sub };
       return res.status(200).send({
@@ -64,7 +73,7 @@ export class AuthService {
           refreshToken: this.createRefreshToken(payload),
         },
       });
-    } catch (error) {
+    } catch {
       return res.status(400).send({
         status: 400,
         message: "토큰 갱신 실패",
@@ -74,7 +83,7 @@ export class AuthService {
   }
 
   // 로그인
-  async postLogin(req: LoginAuthDto, res: Response): Promise<any> {
+  async postLogin(req: LoginAuthDto, res: Response): Promise<Response | undefined> {
     try {
       const user = await this.usersService.getDetail(req.email);
 
@@ -86,7 +95,6 @@ export class AuthService {
       }
 
       const checkPassword = await bcrypt.compare(req.password, user.password);
-      console.log(checkPassword);
       if (!checkPassword) {
         return res.status(400).send({
           status: 400,
@@ -107,7 +115,7 @@ export class AuthService {
         message: "로그인 성공",
         data: token,
       });
-    } catch (e) {
+    } catch {
       if (!res.headersSent) {
         return res.status(400).send({
           status: 400,

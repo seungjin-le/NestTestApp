@@ -18,15 +18,11 @@ export class UserService {
    * @param page number 페이지 번호
    * @param limit number 페이지 당 유저 수
    * @param res Response 응답 객체
-   * @returns any 유저 목록
+   * @returns 유저 목록 응답
    */
-  async getAll(page: number, limit: number, res: Response): Promise<any> {
+  async getAll(page: number, limit: number, res: Response): Promise<Response> {
     try {
-      const users: [] | UserEntity[] | any = await this.userModel
-        .find()
-        .skip(limit * (page - 1))
-        .limit(limit)
-        .exec();
+      const users = await this.userModel.find().skip(limit * (page - 1)).limit(limit).exec();
 
       if (users.length === 0) return res.status(404).send({ status: 404, message: "유저 목록이 없습니다." });
       return res.status(200).send({
@@ -35,15 +31,23 @@ export class UserService {
         data: users,
       });
     } catch {
-      res.status(500).send({ status: 500, message: "서버 에러" });
+      return res.status(500).send({ status: 500, message: "서버 에러" });
     }
   }
 
   // 유저 상세 조회
-  async getDetail(email: string, res?: Response): Promise<any> {
+  async getDetail(email: string): Promise<UserDocument | null>;
+  async getDetail(email: string, res: Response): Promise<Response>;
+  async getDetail(email: string, res?: Response): Promise<UserDocument | Response | null> {
     try {
       const user = await this.userModel.findOne({ email }).exec();
-      if (!user) res.status(404).send({ status: 404, message: "유저 조회 실패" });
+      if (!user) {
+        if (res) {
+          return res.status(404).send({ status: 404, message: "유저 조회 실패" });
+        }
+
+        return null;
+      }
 
       if (!res) return user;
 
@@ -52,8 +56,12 @@ export class UserService {
         message: "유저 조회 성공",
         data: user,
       });
-    } catch (error) {
-      res.status(500).send({ status: 500, message: "서버 에러" });
+    } catch {
+      if (res) {
+        return res.status(500).send({ status: 500, message: "서버 에러" });
+      }
+
+      throw new Error("유저 조회 실패");
     }
   }
 
@@ -61,9 +69,9 @@ export class UserService {
    * @description 유저 정보 수정
    * @param body UpdateUserDto 유저 정보 수정 요청 바디
    * @param res Response 응답 객체
-   * @returns any 유저 정보 수정 성공 메시지
+   * @returns 유저 정보 수정 성공 메시지
    */
-  async patch(body: UpdateUserDto, res: Response): Promise<any> {
+  async patch(_body: UpdateUserDto, res: Response): Promise<Response> {
     return res.status(200).send({
       status: 200,
       message: "유저 정보 수정 성공",
@@ -72,7 +80,7 @@ export class UserService {
   }
 
   // 회원가입
-  async postJoin(body: CreateUserDto, res: Response): Promise<any> {
+  async postJoin(body: CreateUserDto, res: Response): Promise<Response> {
     try {
       const user = await this.userModel.findOne({ email: body.email });
 
@@ -94,7 +102,7 @@ export class UserService {
         message: "회원가입 성공",
         data: {},
       });
-    } catch (error) {
+    } catch {
       return res.status(400).send({
         status: 400,
         message: "회원가입 실패",

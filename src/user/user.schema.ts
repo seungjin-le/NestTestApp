@@ -1,6 +1,6 @@
 import mongoose, { SchemaOptions, Schema, Document } from "mongoose";
 
-const options: SchemaOptions = {
+const options: SchemaOptions<UserDocument> = {
   timestamps: true,
   collection: "user",
   versionKey: false,
