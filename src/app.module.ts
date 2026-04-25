@@ -1,15 +1,9 @@
 import { Module } from "@nestjs/common";
-import { MoviesModule } from "./movies/movies.module";
 import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
 import { Connection } from "mongoose";
-import { ConfigModule } from "@nestjs/config";
-import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
-import { PostUserModule } from "./post_user/post_user.module";
-// import { DbModule } from "./db/db.module";
-import { EventModule } from "./event/event.module";
-import { SocketModule } from './socket/socket.module';
 import configuration from "@/config/configuration";
 
 @Module({
@@ -26,21 +20,6 @@ import configuration from "@/config/configuration";
       isGlobal: true,
       envFilePath: ".env",
     }),  
-    ConfigModule.forRoot({}),
-
-    /** 
-     * @description JWT 모듈
-     * @param global JWT 모듈 전역 설정
-     * @param secret JWT 모듈 시크릿 키
-     * @param signOptions JWT 모듈 서명 옵션
-     * @returns JwtModule JWT 모듈
-     */
-    JwtModule.register({
-      // JWT 모듈
-      global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: "30m", algorithm: "HS256" },
-    }),
 
     /** 
      * @description MongoDB 모듈
@@ -48,25 +27,13 @@ import configuration from "@/config/configuration";
      * @returns MongooseModule MongoDB 모듈
      */
     MongooseModule.forRootAsync({
-      useFactory: () => ({
-        uri: process.env.MONGODB_URL,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.getOrThrow<string>("database.mongodbUrl"),
       }),
     }),
-    /** 
-     * @description 이벤트 모듈
-     * @returns EventModule 이벤트 모듈
-     */   
-    EventModule, 
-    /** 
-     * @description 영화 모듈
-     * @returns MoviesModule 영화 모듈
-     */
-    MoviesModule, // 영화 모듈
     AuthModule, // 인증 모듈
     UserModule, // 사용자 모듈
-    PostUserModule, // 게시글 모듈
-    SocketModule, // 소켓 모듈
-    // DbModule, // 데이터베이스 모듈
   ],
   controllers: [],
   providers: [],
@@ -78,9 +45,9 @@ export class AppModule {
 
 
     if (mongooseInstance.readyState === 1) {
-      console.log("MongoDB 연결 성공!", process.env.MONGODB_URL);
+      console.log("MongoDB 연결 성공!");
     } else {
-      console.error("MongoDB 연결 실패:", process.env.MONGODB_URL, mongooseInstance.readyState);
+      console.error("MongoDB 연결 실패:", mongooseInstance.readyState);
     }
   }
 }
