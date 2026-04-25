@@ -1,5 +1,5 @@
 {
-  "printWidth": 180,
+  "printWidth": 100,
   "useTabs": false,
   "tabWidth": 2,
   "semi": true,
@@ -11,7 +11,7 @@
   "arrowParens": "always",
   "embeddedLanguageFormatting": "auto",
   "proseWrap": "preserve",
-  "endOfLine": "auto",
+  "endOfLine": "lf",
   "bracketSpacing": true,
   "tsdoc": true
 
