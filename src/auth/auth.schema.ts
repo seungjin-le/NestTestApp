@@ -16,7 +16,7 @@ export interface AuthDocument extends Document {
 
 export const AuthSchema = new Schema<AuthDocument>(
   {
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     accessToken: { type: String, required: true },
     refreshToken: { type: String, required: true },
     createdAt: { type: Date, expires: "7d", default: Date.now },

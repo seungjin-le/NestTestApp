@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
@@ -25,9 +30,17 @@ export class UserService {
    */
   async getAll(page: number, limit: number): Promise<ApiResponse<UserDocument[]>> {
     try {
-      const users = await this.userModel.find().skip(limit * (page - 1)).limit(limit).exec();
+      const safePage = Math.max(Number(page) || 1, 1);
+      const safeLimit = Math.min(Math.max(Number(limit) || 20, 1), 100);
+      const users = await this.userModel
+        .find()
+        .select("-password")
+        .skip(safeLimit * (safePage - 1))
+        .limit(safeLimit)
+        .exec();
 
-      if (users.length === 0) throw new NotFoundException({ status: 404, message: "유저 목록이 없습니다." });
+      if (users.length === 0)
+        throw new NotFoundException({ status: 404, message: "유저 목록이 없습니다." });
 
       return {
         status: 200,
@@ -41,12 +54,12 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<UserDocument | null> {
-    return this.userModel.findOne({ email }).exec();
+    return this.userModel.findOne({ email }).select("+password").exec();
   }
 
   async getDetail(email: string): Promise<ApiResponse<UserDocument>> {
     try {
-      const user = await this.findByEmail(email);
+      const user = await this.userModel.findOne({ email }).select("-password").exec();
 
       if (!user) throw new NotFoundException({ status: 404, message: "유저 조회 실패" });
 
@@ -79,7 +92,8 @@ export class UserService {
     try {
       const user = await this.userModel.findOne({ email: body.email });
 
-      if (user) throw new BadRequestException({ status: 400, message: "이미 존재하는 이메일입니다." });
+      if (user)
+        throw new BadRequestException({ status: 400, message: "이미 존재하는 이메일입니다." });
 
       const hashedPassword: string = await bcrypt.hash(body.password, 10);
       const id: number = await this.userModel.countDocuments();

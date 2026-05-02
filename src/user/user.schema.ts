@@ -20,8 +20,8 @@ export interface UserDocument extends Document {
 export const UserSchema = new Schema<UserDocument>(
   {
     id: { type: Number, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, select: false },
     createdAt: { type: Date },
     updatedAt: { type: Date },
     deletedAt: { type: Date },

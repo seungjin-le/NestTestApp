@@ -44,12 +44,7 @@ export class AuthService {
 
   // 토큰 저장
   async saveToken(email: string, token: TokenPair): Promise<void> {
-    const checked = await this.authModel.findOne({ email });
-    if (checked) {
-      await this.authModel.updateOne({ email }, { ...token });
-    } else {
-      await this.authModel.create({ email, ...token });
-    }
+    await this.authModel.updateOne({ email }, { $set: token }, { upsert: true });
   }
 
   // 토큰 확인
@@ -70,13 +65,17 @@ export class AuthService {
       const user = this.jwtService.verify<JwtPayload>(req.refreshToken);
 
       const payload = { email: user.email, sub: user.sub };
+      const token = {
+        accessToken: this.createAccessToken(payload),
+        refreshToken: this.createRefreshToken(payload),
+      };
+
+      await this.saveToken(user.email, token);
+
       return {
         status: 200,
         message: "토큰 갱신 성공",
-        data: {
-          accessToken: this.createAccessToken(payload),
-          refreshToken: this.createRefreshToken(payload),
-        },
+        data: token,
       };
     } catch {
       throw new BadRequestException({ status: 400, message: "토큰 갱신 실패", data: {} });
@@ -94,13 +93,16 @@ export class AuthService {
 
       const checkPassword = await bcrypt.compare(req.password, user.password);
       if (!checkPassword) {
-        throw new BadRequestException({ status: 400, message: "이메일 또는 비밀번호가 일치하지 않습니다." });
+        throw new BadRequestException({
+          status: 400,
+          message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+        });
       }
 
       const payload = { email: user.email, sub: user.id };
       const token = {
-        accessToken: await this.jwtService.signAsync(payload, { expiresIn: "1h" }),
-        refreshToken: await this.jwtService.signAsync(payload, { expiresIn: "7d" }),
+        accessToken: this.createAccessToken(payload),
+        refreshToken: this.createRefreshToken(payload),
       };
 
       await this.saveToken(user.email, token);

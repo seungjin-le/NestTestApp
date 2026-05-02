@@ -1,10 +1,11 @@
-import { Post, Body } from "@nestjs/common";
+import { Body, Post, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { TokenAuthDto } from "./dto/token-auth.dto";
 import { apiOperation, apiResponse, controller } from "@/utils/apiDecorators";
 import { LoginAuthDto } from "./dto/login-auth.dto";
 import { ApiBody } from "@nestjs/swagger";
 import { RefreshAuthDto } from "./dto/refresh-auth.dto";
+import { AuthGuard } from "./auth.guard";
 
 @controller("Auth", "v1/auth")
 export class AuthController {
@@ -31,6 +32,7 @@ export class AuthController {
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
   @apiResponse(500, "서버 에러")
+  @UseGuards(AuthGuard)
   postRefresh(@Body() req: RefreshAuthDto) {
     return this.authService.postRefresh(req);
   }

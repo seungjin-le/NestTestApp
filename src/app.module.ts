@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
-import { InjectConnection, MongooseModule } from "@nestjs/mongoose";
-import { Connection } from "mongoose";
+import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { ProductModule } from "./product/product.module";
@@ -9,7 +8,7 @@ import configuration from "@/config/configuration";
 
 @Module({
   imports: [
-    /** 
+    /**
      * @description 환경 변수 모듈
      * @param load 환경 변수 파일 로드
      * @param isGlobal 환경 변수 모듈 전역 설정
@@ -20,9 +19,9 @@ import configuration from "@/config/configuration";
       load: [configuration],
       isGlobal: true,
       envFilePath: ".env",
-    }),  
+    }),
 
-    /** 
+    /**
      * @description MongoDB 모듈
      * @param uri MongoDB 모듈 연결 주소
      * @returns MongooseModule MongoDB 모듈
@@ -40,16 +39,4 @@ import configuration from "@/config/configuration";
   controllers: [],
   providers: [],
 })
-export class AppModule {
-  constructor(@InjectConnection() private readonly mongooseConnection: Connection) {
-    /** @description MongoDB 연결 상태 확인 */
-    const mongooseInstance = this.mongooseConnection;
-
-
-    if (mongooseInstance.readyState === 1) {
-      console.log("MongoDB 연결 성공!");
-    } else {
-      console.error("MongoDB 연결 실패:", mongooseInstance.readyState);
-    }
-  }
-}
+export class AppModule {}
