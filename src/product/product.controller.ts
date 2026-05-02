@@ -5,7 +5,7 @@ import { apiBody, apiOperation, apiResponse, controller } from "@/utils/apiDecor
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductService } from "./product.service";
 
-@controller("Product", "api/v1/products")
+@controller("Product", "v1/products")
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 

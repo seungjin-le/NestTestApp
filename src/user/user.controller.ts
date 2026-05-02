@@ -1,15 +1,14 @@
-import { Get, Post, Body, Patch, Param, Query, Res } from "@nestjs/common";
+import { Get, Post, Body, Patch, Param, Query } from "@nestjs/common";
 import { UserService } from "@/user/user.service";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
 import { apiBody, apiOperation, apiResponse, controller } from "@/utils/apiDecorators";
 import { ApiParam, ApiQuery } from "@nestjs/swagger";
 import { GetAllUserDto } from "@/user/dto/getAll-user.dto";
-import { Response } from "express";
 import { GetDetailUserDto } from "@/user/dto/getDetail-user-dto";
 
-@controller("User", "api/v1/user")
-export class UserGetAllController {
+@controller("User", "v1/user")
+export class UserController {
   constructor(private readonly userService: UserService) {}
 
   /**
@@ -30,19 +29,9 @@ export class UserGetAllController {
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  getAll(@Query("page") page: number, @Query("size") limit: number, @Res() res: Response) {
-    return this.userService.getAll(page, limit, res);
+  getAll(@Query("page") page: number, @Query("size") limit: number) {
+    return this.userService.getAll(page, limit);
   }
-}
-
-/**
- * @description 유저 상세 조회 컨트롤러
- * @class UserGetDetailController
- * @param userService 유저 서비스
- */
-@controller("User", "api/v1/user")
-export class UserGetDetailController {
-  constructor(private readonly userService: UserService) {}
 
   @Get(":email")
   @ApiParam({ name: "email", type: String, description: "유저 이메일" })
@@ -54,19 +43,9 @@ export class UserGetDetailController {
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  getDetail(@Param("email") email: string, @Res() res: Response) {
-    return this.userService.getDetail(email, res);
+  getDetail(@Param("email") email: string) {
+    return this.userService.getDetail(email);
   }
-}
-
-/**
- * @description 회원가입 컨트롤러
- * @class UserPostJoinController
- * @param userService 유저 서비스
- */
-@controller("User", "api/v1/user")
-export class UserPostJoinController {
-  constructor(private readonly userService: UserService) {}
 
   @Post("join")
   @apiBody("유저 정보", CreateUserDto)
@@ -76,19 +55,9 @@ export class UserPostJoinController {
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  postJoin(@Body() body: CreateUserDto, @Res() res: Response) {
-    return this.userService.postJoin(body, res);
+  postJoin(@Body() body: CreateUserDto) {
+    return this.userService.postJoin(body);
   }
-}
-
-/**
- * @description 회원정보 수정 컨트롤러
- * @class UserPatchController
- * @param userService 유저 서비스
- */
-@controller("User", "api/v1/user")
-export class UserPatchController {
-  constructor(private readonly userService: UserService) {}
 
   @Patch("update")
   @apiBody("유저 정보", UpdateUserDto)
@@ -98,7 +67,7 @@ export class UserPatchController {
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  postJoin(@Body() body: UpdateUserDto, @Res() res: Response) {
-    return this.userService.patch(body, res);
+  patch(@Body() body: UpdateUserDto) {
+    return this.userService.patch(body);
   }
 }

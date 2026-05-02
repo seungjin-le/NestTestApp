@@ -1,4 +1,6 @@
-import mongoose, { SchemaOptions, Schema, Document } from "mongoose";
+import { SchemaOptions, Schema, Document } from "mongoose";
+
+export const USER_MODEL_NAME = "User";
 
 const options: SchemaOptions<UserDocument> = {
   timestamps: true,
@@ -15,7 +17,7 @@ export interface UserDocument extends Document {
   deletedAt: Date;
 }
 
-const User = new Schema<UserDocument>(
+export const UserSchema = new Schema<UserDocument>(
   {
     id: { type: Number, required: true },
     email: { type: String, required: true },
@@ -26,7 +28,3 @@ const User = new Schema<UserDocument>(
   },
   options
 );
-
-const UserSchema = mongoose.model<UserDocument>("User", User);
-
-export default UserSchema;

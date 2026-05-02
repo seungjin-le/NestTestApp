@@ -1,94 +1,86 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { UserEntity } from "@/user/entities/user.entity";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
 import { Model } from "mongoose";
-import { UserDocument } from "@/user/user.schema";
+import { USER_MODEL_NAME, UserDocument } from "@/user/user.schema";
 
 import * as bcrypt from "bcrypt";
-import { Response } from "express";
+
+type ApiResponse<T> = {
+  status: number;
+  message: string;
+  data: T;
+};
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(USER_MODEL_NAME) private readonly userModel: Model<UserDocument>) {}
 
   /**
    * @description 유저 전체 조회
    * @param page number 페이지 번호
    * @param limit number 페이지 당 유저 수
-   * @param res Response 응답 객체
    * @returns 유저 목록 응답
    */
-  async getAll(page: number, limit: number, res: Response): Promise<Response> {
+  async getAll(page: number, limit: number): Promise<ApiResponse<UserDocument[]>> {
     try {
       const users = await this.userModel.find().skip(limit * (page - 1)).limit(limit).exec();
 
-      if (users.length === 0) return res.status(404).send({ status: 404, message: "유저 목록이 없습니다." });
-      return res.status(200).send({
+      if (users.length === 0) throw new NotFoundException({ status: 404, message: "유저 목록이 없습니다." });
+
+      return {
         status: 200,
         message: "유저 목록 조회 성공",
         data: users,
-      });
-    } catch {
-      return res.status(500).send({ status: 500, message: "서버 에러" });
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException({ status: 500, message: "서버 에러" });
     }
   }
 
-  // 유저 상세 조회
-  async getDetail(email: string): Promise<UserDocument | null>;
-  async getDetail(email: string, res: Response): Promise<Response>;
-  async getDetail(email: string, res?: Response): Promise<UserDocument | Response | null> {
+  async findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
+
+  async getDetail(email: string): Promise<ApiResponse<UserDocument>> {
     try {
-      const user = await this.userModel.findOne({ email }).exec();
-      if (!user) {
-        if (res) {
-          return res.status(404).send({ status: 404, message: "유저 조회 실패" });
-        }
+      const user = await this.findByEmail(email);
 
-        return null;
-      }
+      if (!user) throw new NotFoundException({ status: 404, message: "유저 조회 실패" });
 
-      if (!res) return user;
-
-      return res.status(200).send({
+      return {
         status: 200,
         message: "유저 조회 성공",
         data: user,
-      });
-    } catch {
-      if (res) {
-        return res.status(500).send({ status: 500, message: "서버 에러" });
-      }
-
-      throw new Error("유저 조회 실패");
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException({ status: 500, message: "서버 에러" });
     }
   }
 
   /**
    * @description 유저 정보 수정
    * @param body UpdateUserDto 유저 정보 수정 요청 바디
-   * @param res Response 응답 객체
    * @returns 유저 정보 수정 성공 메시지
    */
-  async patch(_body: UpdateUserDto, res: Response): Promise<Response> {
-    return res.status(200).send({
+  async patch(_body: UpdateUserDto): Promise<ApiResponse<Record<string, never>>> {
+    return {
       status: 200,
       message: "유저 정보 수정 성공",
       data: {},
-    });
+    };
   }
 
   // 회원가입
-  async postJoin(body: CreateUserDto, res: Response): Promise<Response> {
+  async postJoin(body: CreateUserDto): Promise<ApiResponse<Record<string, never>>> {
     try {
       const user = await this.userModel.findOne({ email: body.email });
 
-      if (user)
-        return res.status(400).send({
-          status: 400,
-          message: "이미 존재하는 이메일입니다.",
-        });
+      if (user) throw new BadRequestException({ status: 400, message: "이미 존재하는 이메일입니다." });
+
       const hashedPassword: string = await bcrypt.hash(body.password, 10);
       const id: number = await this.userModel.countDocuments();
 
@@ -97,16 +89,15 @@ export class UserService {
         email: body.email,
         password: hashedPassword,
       });
-      return res.status(200).send({
+
+      return {
         status: 200,
         message: "회원가입 성공",
         data: {},
-      });
-    } catch {
-      return res.status(400).send({
-        status: 400,
-        message: "회원가입 실패",
-      });
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new BadRequestException({ status: 400, message: "회원가입 실패" });
     }
   }
 }

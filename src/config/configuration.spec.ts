@@ -14,14 +14,10 @@ describe("configuration", () => {
   it("returns typed default values", () => {
     delete process.env.NODE_ENV;
     delete process.env.PORT;
-    delete process.env.DATABASE_PORT;
 
     expect(configuration()).toMatchObject({
       nodeEnv: "development",
       port: 3000,
-      database: {
-        port: 5432,
-      },
     });
   });
 

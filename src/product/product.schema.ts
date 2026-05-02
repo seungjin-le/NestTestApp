@@ -1,6 +1,8 @@
-import mongoose, { Document, Schema, SchemaOptions } from "mongoose";
+import { Document, Schema, SchemaOptions } from "mongoose";
 
 import { PRODUCT_STATUS, PRODUCT_STATUSES, ProductStatus } from "./product.types";
+
+export const PRODUCT_MODEL_NAME = "Product";
 
 const options: SchemaOptions<ProductDocument> = {
   timestamps: true,
@@ -22,7 +24,7 @@ export interface ProductDocument extends Document {
   updatedAt: Date;
 }
 
-const Product = new Schema<ProductDocument>(
+export const ProductSchema = new Schema<ProductDocument>(
   {
     name: { type: String, required: true, trim: true },
     description: { type: String, required: true },
@@ -36,7 +38,3 @@ const Product = new Schema<ProductDocument>(
   },
   options
 );
-
-const ProductSchema = mongoose.model<ProductDocument>("Product", Product);
-
-export default ProductSchema;

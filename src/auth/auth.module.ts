@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthPostLoginController, AuthPostRefreshController } from "./auth.controller";
+import { AuthController } from "./auth.controller";
 import { UserModule } from "../user/user.module";
 import { MongooseModule } from "@nestjs/mongoose";
-import AuthSchema from "./auth.schema";
+import { AUTH_MODEL_NAME, AuthSchema } from "./auth.schema";
 import { AuthGuard } from "./auth.guard";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtModule } from "@nestjs/jwt";
@@ -14,8 +14,8 @@ import { ConfigService } from "@nestjs/config";
     UserModule,
     MongooseModule.forFeature([
       {
-        name: "Auth",
-        schema: AuthSchema.schema,
+        name: AUTH_MODEL_NAME,
+        schema: AuthSchema,
       },
     ]),
     JwtModule.registerAsync({
@@ -29,7 +29,7 @@ import { ConfigService } from "@nestjs/config";
       }),
     }),
   ],
-  controllers: [AuthPostRefreshController, AuthPostLoginController],
+  controllers: [AuthController],
 
   providers: [
     AuthService,

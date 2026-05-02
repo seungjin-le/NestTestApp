@@ -1,4 +1,6 @@
-import mongoose, { SchemaOptions, Schema, Document } from "mongoose";
+import { SchemaOptions, Schema, Document } from "mongoose";
+
+export const AUTH_MODEL_NAME = "Auth";
 
 const options: SchemaOptions = {
   timestamps: true,
@@ -12,7 +14,7 @@ export interface AuthDocument extends Document {
   createdAt: Date;
 }
 
-const Auth = new Schema<AuthDocument>(
+export const AuthSchema = new Schema<AuthDocument>(
   {
     email: { type: String, required: true },
     accessToken: { type: String, required: true },
@@ -21,7 +23,3 @@ const Auth = new Schema<AuthDocument>(
   },
   options
 );
-
-const AuthSchema = mongoose.model<AuthDocument>("auth", Auth);
-
-export default AuthSchema;

@@ -1,12 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { LoginAuthDto } from "./dto/login-auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import * as bcrypt from "bcrypt";
 import { RefreshAuthDto } from "./dto/refresh-auth.dto";
-import { Response } from "express";
 import { Model } from "mongoose";
-import { AuthDocument } from "./auth.schema";
+import { AUTH_MODEL_NAME, AuthDocument } from "./auth.schema";
 import { InjectModel } from "@nestjs/mongoose";
 
 type JwtPayload = {
@@ -19,12 +18,18 @@ type TokenPair = {
   refreshToken: string;
 };
 
+type TokenResponse = {
+  status: number;
+  message: string;
+  data: TokenPair;
+};
+
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    @InjectModel("Auth") private authModel: Model<AuthDocument>
+    @InjectModel(AUTH_MODEL_NAME) private authModel: Model<AuthDocument>
   ) {}
 
   // Refresh 토큰 생성
@@ -60,46 +65,36 @@ export class AuthService {
   }
 
   // 토큰 갱신
-  async postRefresh(req: RefreshAuthDto, res: Response): Promise<Response> {
+  async postRefresh(req: RefreshAuthDto): Promise<TokenResponse> {
     try {
       const user = this.jwtService.verify<JwtPayload>(req.refreshToken);
 
       const payload = { email: user.email, sub: user.sub };
-      return res.status(200).send({
+      return {
         status: 200,
         message: "토큰 갱신 성공",
         data: {
           accessToken: this.createAccessToken(payload),
           refreshToken: this.createRefreshToken(payload),
         },
-      });
+      };
     } catch {
-      return res.status(400).send({
-        status: 400,
-        message: "토큰 갱신 실패",
-        data: {},
-      });
+      throw new BadRequestException({ status: 400, message: "토큰 갱신 실패", data: {} });
     }
   }
 
   // 로그인
-  async postLogin(req: LoginAuthDto, res: Response): Promise<Response | undefined> {
+  async postLogin(req: LoginAuthDto): Promise<TokenResponse> {
     try {
-      const user = await this.usersService.getDetail(req.email);
+      const user = await this.usersService.findByEmail(req.email);
 
       if (!user) {
-        return res.status(400).send({
-          status: 400,
-          message: "일치하는 유저가 없습니다.",
-        });
+        throw new BadRequestException({ status: 400, message: "일치하는 유저가 없습니다." });
       }
 
       const checkPassword = await bcrypt.compare(req.password, user.password);
       if (!checkPassword) {
-        return res.status(400).send({
-          status: 400,
-          message: "이메일 또는 비밀번호가 일치하지 않습니다.",
-        });
+        throw new BadRequestException({ status: 400, message: "이메일 또는 비밀번호가 일치하지 않습니다." });
       }
 
       const payload = { email: user.email, sub: user.id };
@@ -110,18 +105,14 @@ export class AuthService {
 
       await this.saveToken(user.email, token);
 
-      return res.status(200).send({
+      return {
         status: 200,
         message: "로그인 성공",
         data: token,
-      });
-    } catch {
-      if (!res.headersSent) {
-        return res.status(400).send({
-          status: 400,
-          message: "로그인 실패",
-        });
-      }
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new BadRequestException({ status: 400, message: "로그인 실패" });
     }
   }
 }

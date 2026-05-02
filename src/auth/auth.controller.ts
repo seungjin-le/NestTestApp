@@ -1,15 +1,13 @@
-import { Post, Body, Res } from "@nestjs/common";
+import { Post, Body } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { TokenAuthDto } from "./dto/token-auth.dto";
 import { apiOperation, apiResponse, controller } from "@/utils/apiDecorators";
 import { LoginAuthDto } from "./dto/login-auth.dto";
 import { ApiBody } from "@nestjs/swagger";
 import { RefreshAuthDto } from "./dto/refresh-auth.dto";
-import { Response } from "express";
 
-// 로그인 컨트롤러
-@controller("Auth", "api/v1/auth")
-export class AuthPostLoginController {
+@controller("Auth", "v1/auth")
+export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("login")
@@ -20,16 +18,9 @@ export class AuthPostLoginController {
   @apiResponse(401, "권한 없음")
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
-  postLogin(@Body() req: LoginAuthDto, @Res() res: Response) {
-    console.log(req);
-    return this.authService.postLogin(req, res);
+  postLogin(@Body() req: LoginAuthDto) {
+    return this.authService.postLogin(req);
   }
-}
-
-// 토큰 갱신 컨트롤러
-@controller("Auth", "api/v1/auth")
-export class AuthPostRefreshController {
-  constructor(private readonly authService: AuthService) {}
 
   @Post("refresh")
   @apiOperation("토큰 갱신", "토큰 갱신")
@@ -40,7 +31,7 @@ export class AuthPostRefreshController {
   @apiResponse(403, "금지됨")
   @apiResponse(405, "허용되지 않음")
   @apiResponse(500, "서버 에러")
-  postRefresh(@Body() req: RefreshAuthDto, @Res() res: Response) {
-    return this.authService.postRefresh(req, res);
+  postRefresh(@Body() req: RefreshAuthDto) {
+    return this.authService.postRefresh(req);
   }
 }
