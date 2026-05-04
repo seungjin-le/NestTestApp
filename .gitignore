@@ -40,3 +40,7 @@ lerna-debug.log*
 .pnp.cjs
 .pnpmrc
 .pnpmfile.cjs
+
+docker-compose.yml
+Dockerfile  
+.dockerignore
